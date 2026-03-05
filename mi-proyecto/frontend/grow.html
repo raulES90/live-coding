@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenRoom — Grow Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #1a1710;
+  --s1:       #231f16;
+  --s2:       #2c2820;
+  --s3:       #353028;
+  --b1:       #3d3830;
+  --b2:       #4d4840;
+  --sage:     #7a8c6e;
+  --fern:     #5e7250;
+  --moss:     #4a5c3d;
+  --olive:    #6b7a52;
+  --leaf:     #9aab88;
+  --clay:     #b08060;
+  --sand:     #c8a87a;
+  --wheat:    #d4b896;
+  --linen:    #e8ddd0;
+  --cream:    #f0ebe0;
+  --text:     #e0d8cc;
+  --muted:    #8a8070;
+  --subtle:   #5a5448;
+  --accent:   #8fa870;
+  --acc-dk:   #6b8252;
+  --r:        12px;
+  --FD: 'Playfair Display', serif;
+  --FB: 'Barlow', sans-serif;
+  --FC: 'Barlow Condensed', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--FB);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:180px}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;background:rgba(26,23,16,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--b1)}
+.nav-logo{display:flex;align-items:center;gap:.6rem;font-family:var(--FD);font-size:1.4rem;font-weight:900;letter-spacing:-.3px;text-decoration:none;color:var(--text)}
+.nav-logo .leaf-icon{width:30px;height:30px;background:var(--moss);border:1px solid var(--fern);border-radius:50% 8% 50% 8%;display:flex;align-items:center;justify-content:center;font-size:.82rem;transform:rotate(-12deg);flex-shrink:0}
+.nav-logo span{color:var(--leaf)}
+.nav-right{display:flex;align-items:center;gap:.65rem}
+#nav-user{font-family:var(--FC);font-size:.82rem;letter-spacing:.6px;color:var(--sage);text-transform:uppercase}
+
+/* ── BUTTONS ── */
+.btn{font-family:var(--FC);font-weight:700;letter-spacing:.7px;text-transform:uppercase;font-size:.8rem;padding:.5rem 1.15rem;border-radius:7px;border:none;cursor:pointer;transition:all .2s ease}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--b2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--sage)}
+.btn-primary{background:var(--accent);color:var(--s1);border:1px solid var(--acc-dk)}
+.btn-primary:hover{background:var(--acc-dk);color:var(--linen);transform:translateY(-1px);box-shadow:0 4px 16px rgba(107,130,82,.25)}
+.btn-warm{background:var(--clay);color:var(--linen);border:1px solid #8a5030}
+.btn-warm:hover{background:#8a5030;transform:translateY(-1px)}
+.btn-danger{background:transparent;color:#c08070;border:1px solid #6a3020}
+.btn-danger:hover{background:#3a1a10;color:#d09080}
+.btn-sm{padding:.35rem .8rem;font-size:.75rem}
+.btn-lg{padding:.75rem 2rem;font-size:.88rem}
+.btn-block{width:100%}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block;animation:riseIn .28s ease}
+@keyframes riseIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── AUTH ── */
+#page-auth{display:none;min-height:calc(100vh - 62px);align-items:center;justify-content:center;padding:2rem;position:relative}
+#page-auth.active{display:flex}
+#page-auth::before{content:'';position:absolute;top:-60px;right:-80px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(74,92,61,.14) 0%,transparent 68%);pointer-events:none}
+#page-auth::after{content:'';position:absolute;bottom:-40px;left:-60px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(176,128,96,.1) 0%,transparent 68%);pointer-events:none}
+.auth-wrap{position:relative;z-index:1;width:100%;max-width:430px}
+.auth-eyebrow{font-family:var(--FC);font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--sage);margin-bottom:.55rem}
+.auth-heading{font-family:var(--FD);font-size:2.1rem;font-weight:900;line-height:1.18;margin-bottom:1.8rem;color:var(--cream)}
+.auth-heading em{color:var(--leaf);font-style:italic}
+.auth-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:2.1rem;position:relative;overflow:hidden}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sage),var(--clay),transparent)}
+.auth-tabs{display:flex;gap:.35rem;background:var(--s2);padding:.28rem;border-radius:8px;margin-bottom:1.7rem}
+.auth-tab{flex:1;padding:.52rem;border:none;background:transparent;color:var(--muted);font-family:var(--FC);font-weight:700;font-size:.8rem;letter-spacing:.7px;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:all .18s}
+.auth-tab.active{background:var(--accent);color:var(--s1)}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:1.05rem}
+.form-group label{display:block;font-family:var(--FC);font-size:.7rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--sage);margin-bottom:.42rem}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:.72rem 1rem;background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--text);font-family:var(--FB);font-size:.93rem;font-weight:300;transition:border-color .2s,box-shadow .2s;outline:none;appearance:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--subtle)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(122,140,110,.12)}
+.form-group textarea{resize:vertical;min-height:90px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form-error{font-size:.78rem;color:#c08878;margin-top:.4rem;display:none;font-family:var(--FC);letter-spacing:.3px}
+.form-error.show{display:block}
+.hint{font-size:.73rem;color:var(--subtle);font-family:var(--FC);letter-spacing:.3px;margin-bottom:.75rem}
+
+/* ── SHOP ── */
+#page-shop{max-width:1320px;margin:0 auto;padding:2.4rem 2rem}
+#page-shop.active{display:block}
+.shop-hero{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.4rem;gap:1rem;flex-wrap:wrap}
+.shop-hero .eyebrow{font-family:var(--FC);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:.38rem}
+.shop-hero h1{font-family:var(--FD);font-size:2.2rem;font-weight:900;line-height:1.1}
+.shop-hero h1 em{color:var(--leaf);font-style:italic}
+
+/* tabs */
+.shop-tabs{display:flex;border-bottom:1px solid var(--b1);margin-bottom:2rem;overflow-x:auto}
+.shop-tab{padding:.65rem 1.3rem;border:none;background:transparent;color:var(--muted);font-family:var(--FC);font-weight:700;font-size:.8rem;letter-spacing:.7px;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;white-space:nowrap}
+.shop-tab:hover{color:var(--text)}
+.shop-tab.active{color:var(--leaf);border-bottom-color:var(--sage)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:riseIn .2s ease}
+.sec-title{font-family:var(--FC);font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--subtle);margin-bottom:1.4rem}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.filter-btn{font-family:var(--FC);font-size:.75rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:.35rem .9rem;border-radius:20px;border:1px solid var(--b2);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s}
+.filter-btn:hover{border-color:var(--sage);color:var(--text)}
+.filter-btn.active{background:var(--moss);border-color:var(--fern);color:var(--leaf)}
+
+/* ── PRODUCTS GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem}
+
+.product-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;transition:border-color .22s,transform .22s,box-shadow .22s;cursor:pointer}
+.product-card:hover{border-color:var(--fern);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.5)}
+
+.product-img{height:190px;overflow:hidden;position:relative;background:var(--s2);border-bottom:1px solid var(--b1)}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.product-card:hover .product-img img{transform:scale(1.05)}
+.product-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--s2)}
+.product-badge{position:absolute;top:.65rem;left:.65rem;z-index:1;background:var(--s3);color:var(--sage);border:1px solid var(--b2);font-family:var(--FC);font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:.2rem .55rem;border-radius:4px}
+.product-stock{position:absolute;top:.65rem;right:.65rem;z-index:1;font-family:var(--FC);font-size:.6rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:.2rem .55rem;border-radius:4px}
+.stock-ok{background:rgba(74,92,61,.5);border:1px solid var(--fern);color:var(--leaf)}
+.stock-low{background:rgba(160,96,48,.35);border:1px solid var(--clay);color:var(--wheat)}
+
+.product-body{padding:1.05rem 1.15rem 1.15rem}
+.product-cat{font-family:var(--FC);font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--olive);margin-bottom:.28rem}
+.product-name{font-family:var(--FD);font-weight:700;font-size:1rem;line-height:1.3;margin-bottom:.35rem;color:var(--cream)}
+.product-desc-short{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.55;margin-bottom:.85rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-footer{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.product-price{font-family:var(--FD);font-weight:900;font-size:1.22rem;color:var(--sand);font-style:italic}
+.product-seller{font-size:.7rem;color:var(--subtle);font-family:var(--FC);letter-spacing:.4px;margin-top:.1rem}
+.product-rating{font-size:.75rem;color:var(--clay);letter-spacing:1px}
+
+/* ── PRODUCT DETAIL MODAL ── */
+#modal-product{max-width:860px}
+.prod-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:640px){.prod-detail-grid{grid-template-columns:1fr}}
+.prod-detail-img{border-radius:10px;overflow:hidden;background:var(--s2);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:5rem;border:1px solid var(--b2)}
+.prod-detail-img img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.prod-detail-cat{font-family:var(--FC);font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--olive);margin-bottom:.4rem}
+.prod-detail-name{font-family:var(--FD);font-size:1.5rem;font-weight:900;line-height:1.2;margin-bottom:.5rem;color:var(--cream)}
+.prod-detail-price{font-family:var(--FD);font-size:2rem;font-weight:900;font-style:italic;color:var(--sand);margin-bottom:.8rem}
+.prod-detail-rating{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}
+.stars{color:var(--clay);letter-spacing:2px;font-size:.9rem}
+.rating-count{font-size:.78rem;color:var(--muted);font-family:var(--FC)}
+.prod-detail-desc{font-size:.88rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1.2rem}
+.prod-detail-specs{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:1rem;margin-bottom:1.2rem}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:.35rem 0;border-bottom:1px solid var(--b1);font-size:.82rem}
+.spec-row:last-child{border:none}
+.spec-label{color:var(--muted);font-family:var(--FC);font-weight:600;letter-spacing:.4px;text-transform:uppercase;font-size:.72rem}
+.spec-val{color:var(--text);font-weight:400}
+.prod-detail-seller{font-size:.78rem;color:var(--subtle);font-family:var(--FC);margin-bottom:1.2rem}
+.qty-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.qty-label{font-family:var(--FC);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sage)}
+.qty-ctrl{display:flex;align-items:center;gap:.5rem}
+.qty-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--b2);background:var(--s3);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.qty-btn:hover{border-color:var(--sage);color:var(--leaf)}
+#detail-qty{width:48px;text-align:center;background:var(--s2);border:1px solid var(--b2);border-radius:6px;color:var(--text);font-family:var(--FB);font-size:.95rem;padding:.35rem;outline:none}
+
+/* ── CARRITO ── */
+.cart-btn-wrap{position:relative}
+#cart-count{position:absolute;top:-6px;right:-6px;background:var(--clay);color:var(--linen);font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;font-family:var(--FC)}
+#cart-count.show{display:flex}
+.stack{display:flex;flex-direction:column;gap:.7rem}
+.cart-item{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:.95rem 1.2rem;display:flex;align-items:center;gap:1rem;transition:border-color .18s}
+.cart-item:hover{border-color:var(--b2)}
+.cart-item-img{width:52px;height:52px;border-radius:8px;overflow:hidden;background:var(--s2);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.cart-item-img img{width:100%;height:100%;object-fit:cover}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-info h4{font-family:var(--FD);font-weight:700;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item-info p{font-size:.76rem;color:var(--muted);margin-top:.1rem}
+.cart-item-qty{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.cart-qty-btn{width:24px;height:24px;border-radius:4px;border:1px solid var(--b2);background:var(--s2);color:var(--text);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cart-qty-btn:hover{border-color:var(--sage)}
+.cart-item-price{font-family:var(--FD);font-style:italic;font-weight:900;color:var(--sand);font-size:1.05rem;flex-shrink:0;min-width:60px;text-align:right}
+
+.cart-summary{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:1.3rem 1.5rem;margin-top:1.1rem}
+.cart-sum-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.55rem;color:var(--muted)}
+.cart-sum-row span:last-child{color:var(--text)}
+.cart-sum-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--b2);padding-top:.8rem;margin-top:.4rem}
+.cart-total-label{font-family:var(--FC);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage)}
+.cart-total-val{font-family:var(--FD);font-size:1.8rem;font-weight:900;font-style:italic;color:var(--sand)}
+
+/* ── CHECKOUT MODAL ── */
+#modal-checkout{max-width:520px}
+.checkout-steps{display:flex;gap:0;margin-bottom:1.8rem;border-bottom:1px solid var(--b1);padding-bottom:0}
+.checkout-step{flex:1;text-align:center;font-family:var(--FC);font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:.5rem;color:var(--subtle);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.checkout-step.active{color:var(--leaf);border-bottom-color:var(--sage)}
+.checkout-step.done{color:var(--sage)}
+.checkout-panel{display:none}
+.checkout-panel.active{display:block;animation:riseIn .2s ease}
+
+.card-input-wrap{position:relative}
+.card-input-wrap .card-icon{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);font-size:1.1rem;pointer-events:none}
+.card-chips{display:flex;gap:.5rem;margin-bottom:1rem}
+.card-chip{padding:.3rem .7rem;border:1px solid var(--b2);border-radius:5px;font-size:1rem;cursor:pointer;background:var(--s2);transition:border-color .15s}
+.card-chip:hover,.card-chip.active{border-color:var(--sage)}
+
+.order-confirm{text-align:center;padding:1rem 0}
+.confirm-icon{font-size:3.5rem;margin-bottom:1rem}
+.confirm-title{font-family:var(--FD);font-size:1.4rem;font-weight:900;margin-bottom:.5rem;color:var(--cream)}
+.confirm-text{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.order-num{background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:.6rem 1rem;display:inline-block;font-family:var(--FC);font-size:.8rem;letter-spacing:1px;color:var(--wheat);margin-bottom:1.5rem}
+
+/* ── MIS PRODUCTOS ── */
+.my-prod-row{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:.95rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;transition:border-color .18s}
+.my-prod-row:hover{border-color:var(--b2)}
+.my-prod-name{font-family:var(--FD);font-weight:700;font-size:.93rem}
+.my-prod-price{font-size:.8rem;color:var(--sand);font-family:var(--FC);margin-top:.18rem}
+.my-prod-actions{display:flex;gap:.45rem;flex-shrink:0}
+
+/* ── ORDERS ── */
+.order-item{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:.95rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:border-color .18s}
+.order-item:hover{border-color:var(--b2)}
+.order-badge{background:var(--s3);border:1px solid var(--b2);color:var(--sage);font-family:var(--FC);font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:.18rem .5rem;border-radius:4px;flex-shrink:0}
+
+/* ── MODALS GENERIC ── */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(10,8,5,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--s1);border:1px solid var(--b2);border-radius:16px;padding:2.1rem;width:100%;position:relative;animation:riseIn .22s ease;margin:auto}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--fern),var(--clay),transparent);border-radius:16px 16px 0 0}
+.modal-title{font-family:var(--FD);font-weight:900;font-size:1.22rem;margin-bottom:1.5rem;color:var(--cream)}
+.modal-close{position:absolute;top:1rem;right:1rem;width:27px;height:27px;background:var(--s2);border:1px solid var(--b1);border-radius:50%;color:var(--muted);font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s;z-index:1}
+.modal-close:hover{color:var(--text)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:400;background:var(--s2);border:1px solid var(--b2);color:var(--text);padding:.85rem 1.3rem .85rem 1rem;border-radius:10px;font-size:.86rem;display:flex;align-items:center;gap:.65rem;transform:translateX(120%);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:290px;box-shadow:0 6px 28px rgba(0,0,0,.55)}
+#toast.show{transform:none;opacity:1}
+#toast.success{border-left:3px solid var(--sage)}
+#toast.error{border-left:3px solid #a05040}
+.t-icon{font-size:1rem;flex-shrink:0}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:3.2rem 1rem}
+.empty .e-icon{font-size:2.6rem;margin-bottom:.75rem;opacity:.7}
+.empty p{font-size:.88rem;font-weight:300;color:var(--subtle);line-height:1.6}
+.empty strong{color:var(--sage);font-weight:500}
+
+/* ── FOOTER ── */
+footer{background:var(--s1);border-top:1px solid var(--b1);margin-top:5rem;padding:3rem 2rem 2rem;position:relative;z-index:1}
+.footer-inner{max-width:1320px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand .brand-logo{display:flex;align-items:center;gap:.55rem;font-family:var(--FD);font-size:1.2rem;font-weight:900;margin-bottom:.8rem}
+.footer-brand .brand-logo .leaf-icon{width:26px;height:26px;background:var(--moss);border:1px solid var(--fern);border-radius:50% 8% 50% 8%;display:flex;align-items:center;justify-content:center;font-size:.72rem;transform:rotate(-12deg)}
+.footer-brand .brand-logo span{color:var(--leaf)}
+.footer-brand p{font-size:.83rem;color:var(--muted);line-height:1.7;font-weight:300;max-width:260px}
+.footer-col h4{font-family:var(--FC);font-size:.7rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--sage);margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.5rem}
+.footer-col ul li a{font-size:.83rem;color:var(--muted);text-decoration:none;transition:color .15s;font-weight:300}
+.footer-col ul li a:hover{color:var(--text)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--b1);padding-top:1.5rem}
+.footer-copy{font-size:.78rem;color:var(--subtle);font-family:var(--FC);letter-spacing:.3px}
+.footer-legal{display:flex;gap:1.2rem;flex-wrap:wrap}
+.footer-legal a{font-size:.78rem;color:var(--subtle);text-decoration:none;font-family:var(--FC);letter-spacing:.3px;transition:color .15s}
+.footer-legal a:hover{color:var(--sage)}
+.footer-badges{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.pay-badge{background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:.25rem .6rem;font-size:.75rem;color:var(--muted);font-family:var(--FC);letter-spacing:.3px}
+
+/* ── LEGAL MODALS ── */
+.legal-content{max-height:60vh;overflow-y:auto;font-size:.85rem;color:var(--muted);line-height:1.8;font-weight:300}
+.legal-content h3{font-family:var(--FD);font-size:1rem;font-weight:700;color:var(--cream);margin:1.2rem 0 .5rem}
+.legal-content h3:first-child{margin-top:0}
+.legal-content p{margin-bottom:.8rem}
+.legal-content ul{padding-left:1.2rem;margin-bottom:.8rem}
+.legal-content ul li{margin-bottom:.3rem}
+.legal-content::-webkit-scrollbar{width:4px}
+.legal-content::-webkit-scrollbar-track{background:var(--s2)}
+.legal-content::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+
+@media(max-width:640px){
+  nav{padding:0 1rem}
+  #page-shop{padding:1.4rem 1rem}
+  .shop-hero h1{font-size:1.7rem}
+  .cart-item{flex-wrap:wrap}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showTab('catalogo');return false">
+    <div class="leaf-icon">🌿</div>Green<span>Room</span>
+  </a>
+  <div class="nav-right">
+    <span id="nav-user"></span>
+    <div class="cart-btn-wrap" id="btn-cart-wrap" style="display:none">
+      <button class="btn btn-ghost btn-sm" onclick="showTab('carrito')">🧺 Carrito <span id="cart-count"></span></button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="showAuth()" id="btn-login">Acceder</button>
+    <button class="btn btn-ghost btn-sm" onclick="logout()" id="btn-logout" style="display:none">Salir</button>
+  </div>
+</nav>
+
+<!-- ══ AUTH PAGE ══ -->
+<div id="page-auth" class="page">
+  <div class="auth-wrap">
+    <div class="auth-eyebrow">🌱 Grow shop especializado</div>
+    <div class="auth-heading">Tu <em>jardín</em><br>te espera.</div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login',event)">Entrar</button>
+        <button class="auth-tab" onclick="switchAuthTab('register',event)">Registro</button>
+      </div>
+      <div id="auth-login">
+        <div class="form-group"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="cultivador@greenroom.es" autocomplete="email"></div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <div style="position:relative">
+            <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" style="width:100%;padding-right:2.8rem">
+            <button type="button" onclick="togglePass('login-pass',this)" tabindex="-1"
+              style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.2rem;line-height:1;transition:color .15s"
+              title="Mostrar/ocultar contraseña">👁</button>
+          </div>
+        </div>
+        <div class="form-error" id="login-error"></div>
+
+        <button class="btn btn-primary btn-block" style="padding:.68rem" onclick="doLogin()">Iniciar sesión →</button>
+      </div>
+      <div id="auth-register" style="display:none">
+        <div class="form-group"><label>Nombre de cultivador</label><input type="text" id="reg-username" placeholder="ej: verde_profundo" maxlength="50"></div>
+        <div class="form-group"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="tu@email.com"></div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <div style="position:relative">
+            <input type="password" id="reg-pass" placeholder="Mín. 12 caracteres" oninput="updatePassStrength(this.value)" style="width:100%;padding-right:2.8rem">
+            <button type="button" onclick="togglePass('reg-pass',this)" tabindex="-1"
+              style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.2rem;line-height:1;transition:color .15s"
+              title="Mostrar/ocultar contraseña">👁</button>
+          </div>
+          <div id="pass-strength-bar" style="height:3px;border-radius:2px;margin-top:.4rem;background:var(--b2);overflow:hidden"><div id="pass-strength-fill" style="height:100%;width:0;transition:width .3s,background .3s"></div></div>
+          <div id="pass-strength-txt" style="font-size:.68rem;font-family:var(--FC);letter-spacing:.4px;margin-top:.3rem;color:var(--subtle)"></div>
+          <div style="font-size:.68rem;color:var(--subtle);font-family:var(--FC);margin-top:.3rem;line-height:1.5">
+            Debe contener: <span id="req-len" style="color:var(--subtle)">✗ 12+ caracteres</span> · 
+            <span id="req-upper" style="color:var(--subtle)">✗ Mayúscula</span> · 
+            <span id="req-lower" style="color:var(--subtle)">✗ Minúscula</span> · 
+            <span id="req-special" style="color:var(--subtle)">✗ Carácter especial (!@#$…)</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirmar contraseña</label>
+          <div style="position:relative">
+            <input type="password" id="reg-confirm" placeholder="Repite la contraseña" style="width:100%;padding-right:2.8rem">
+            <button type="button" onclick="togglePass('reg-confirm',this)" tabindex="-1"
+              style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.2rem;line-height:1;transition:color .15s"
+              title="Mostrar/ocultar contraseña">👁</button>
+          </div>
+        </div>
+        <div class="form-error" id="reg-error"></div>
+        <button class="btn btn-primary btn-block" style="padding:.68rem" onclick="doRegister()">Crear cuenta →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SHOP PAGE ══ -->
+<div id="page-shop" class="page">
+  <div class="shop-hero">
+    <div>
+      <div class="eyebrow">🌿 GreenRoom Grow Shop</div>
+      <h1>Hola, <em id="username-display">cultivador</em></h1>
+    </div>
+    <button class="btn btn-primary" id="btn-publicar" style="display:none" onclick="openModal('modal-nuevo-producto')">+ Publicar producto</button>
+  </div>
+
+  <div class="shop-tabs">
+    <button class="shop-tab active" onclick="showTab('catalogo')">🏪 Catálogo</button>
+    <button class="shop-tab" onclick="showTab('carrito')">🧺 Carrito</button>
+    <button class="shop-tab" onclick="showTab('mis-productos')">🌱 Mis productos</button>
+    <button class="shop-tab" onclick="showTab('mis-compras')">🧾 Mis compras</button>
+  </div>
+
+  <!-- CATÁLOGO -->
+  <div id="tab-catalogo" class="tab-content active">
+    <!-- BARRA DE BÚSQUEDA -->
+    <div style="margin-bottom:1.2rem;position:relative">
+      <input type="text" id="search-input" placeholder="Buscar producto, marca, categoría…" oninput="searchProducts(this.value)"
+        style="width:100%;padding:.8rem 1.1rem .8rem 2.8rem;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--text);font-family:var(--FB);font-size:.92rem;outline:none;transition:border-color .2s,box-shadow .2s"
+        onfocus="this.style.borderColor='var(--sage)';this.style.boxShadow='0 0 0 3px rgba(122,140,110,.13)'"
+        onblur="this.style.borderColor='var(--b2)';this.style.boxShadow='none'">
+      <span style="position:absolute;left:.9rem;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;opacity:.5">🔍</span>
+      <button id="search-clear" onclick="clearSearch()" style="display:none;position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:var(--b2);border:none;color:var(--muted);border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.7rem;line-height:1">✕</button>
+      <div id="search-results-count" style="font-size:.72rem;color:var(--muted);font-family:var(--FC);letter-spacing:.4px;margin-top:.35rem;min-height:.9rem"></div>
+    </div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" onclick="filterCat('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="filterCat('semillas',this)">🌱 Semillas</button>
+      <button class="filter-btn" onclick="filterCat('sustratos',this)">🪨 Sustratos</button>
+      <button class="filter-btn" onclick="filterCat('nutricion',this)">🧪 Fertilizantes</button>
+      <button class="filter-btn" onclick="filterCat('iluminacion',this)">💡 Iluminación</button>
+      <button class="filter-btn" onclick="filterCat('ventilacion',this)">💨 Ventilación</button>
+      <button class="filter-btn" onclick="filterCat('riego',this)">💧 Riego</button>
+      <button class="filter-btn" onclick="filterCat('armarios',this)">🏠 Armarios</button>
+      <button class="filter-btn" onclick="filterCat('plagas',this)">🛡️ Plagas</button>
+      <button class="filter-btn" onclick="filterCat('herramientas',this)">🔧 Herramientas</button>
+      <button class="filter-btn" onclick="filterCat('extraccion',this)">🧊 Extracción</button>
+      <button class="filter-btn" onclick="filterCat('parafernalia',this)">🪴 Parafernalia</button>
+      <button class="filter-btn" onclick="filterCat('kits',this)">📦 Kits</button>
+      <button class="filter-btn" onclick="filterCat('outlet',this)">🏷️ Outlet</button>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <!-- CARRITO -->
+  <div id="tab-carrito" class="tab-content">
+    <div class="sec-title">Tu cesta</div>
+    <div class="stack" id="cart-list"></div>
+    <div id="cart-summary-wrap" style="display:none">
+      <div class="cart-summary">
+        <div class="cart-sum-row"><span>Subtotal</span><span id="cart-subtotal">0,00 €</span></div>
+        <div class="cart-sum-row"><span>Envío</span><span>Gratis a partir de 50 €</span></div>
+        <div class="cart-sum-row"><span>IVA (21%)</span><span id="cart-iva">0,00 €</span></div>
+        <div class="cart-sum-total">
+          <div><div class="cart-total-label">Total</div><div class="cart-total-val" id="cart-total-val">0,00 €</div></div>
+          <button class="btn btn-warm btn-lg" onclick="openCheckout()">Pagar con tarjeta →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIS PRODUCTOS -->
+  <div id="tab-mis-productos" class="tab-content">
+    <div class="sec-title">Lo que vendes</div>
+    <div class="stack" id="mis-productos-list"></div>
+  </div>
+
+  <!-- MIS COMPRAS -->
+  <div id="tab-mis-compras" class="tab-content">
+  <!-- PERFIL Y DIRECCIÓN (datos cifrados en sesión) -->
+  <div id="demo-profile-card" style="display:none;background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:1.5rem">
+    <div style="font-family:var(--FC);font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:.9rem">🔒 MIS DATOS (cifrados en sesión)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:.25rem;font-family:var(--FC)">NOMBRE</div>
+        <div id="dp-nombre" style="font-size:.88rem;color:var(--cream)">—</div>
+      </div>
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:.25rem;font-family:var(--FC)">TELÉFONO</div>
+        <div id="dp-telefono" style="font-size:.88rem;color:var(--cream)">—</div>
+      </div>
+      <div style="grid-column:1/-1">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:.25rem;font-family:var(--FC)">DIRECCIÓN DE ENVÍO</div>
+        <div id="dp-direccion" style="font-size:.88rem;color:var(--cream)">—</div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--b1)">
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:.25rem;font-family:var(--FC)">MÉTODO DE PAGO GUARDADO</div>
+      <div id="dp-tarjeta" style="font-size:.88rem;color:var(--cream);font-family:var(--FC);letter-spacing:1px">—</div>
+      <div style="font-size:.65rem;color:var(--subtle);margin-top:.3rem;font-family:var(--FC)">🔒 CVV nunca almacenado · Datos cifrados AES-256-GCM</div>
+    </div>
+  </div>
+    <div class="sec-title">Historial de pedidos</div>
+    <div class="stack" id="orders-list"></div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer id="main-footer" style="display:none">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo"><div class="leaf-icon">🌿</div>Green<span>Room</span></div>
+        <p>Tu grow shop de confianza. Productos de calidad para cultivadores exigentes. Envíos discretos a toda España y Europa.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Tienda</h4>
+        <ul>
+          <li><a href="#" onclick="showTab('catalogo');return false">Catálogo</a></li>
+          <li><a href="#" onclick="filterCat('semillas',null);showTab('catalogo');return false">Semillas</a></li>
+          <li><a href="#" onclick="filterCat('nutricion',null);showTab('catalogo');return false">Nutrición</a></li>
+          <li><a href="#" onclick="filterCat('iluminacion',null);showTab('catalogo');return false">Iluminación</a></li>
+          <li><a href="#" onclick="showTab('mis-compras');return false">Mis pedidos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Información</h4>
+        <ul>
+          <li><a href="#" onclick="openModal('modal-sobre');return false">Sobre GreenRoom</a></li>
+          <li><a href="#" onclick="openModal('modal-envios');return false">Envíos y devoluciones</a></li>
+          <li><a href="#" onclick="openModal('modal-faq');return false">Preguntas frecuentes</a></li>
+          <li><a href="#" onclick="openModal('modal-contacto');return false">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#" onclick="openModal('modal-aviso-legal');return false">Aviso legal</a></li>
+          <li><a href="#" onclick="openModal('modal-privacidad');return false">Política de privacidad</a></li>
+          <li><a href="#" onclick="openModal('modal-cookies');return false">Política de cookies</a></li>
+          <li><a href="#" onclick="openModal('modal-terminos');return false">Términos y condiciones</a></li>
+          <li><a href="#" onclick="openModal('modal-copyright');return false">Copyright y uso</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 GreenRoom Grow Shop S.L. — Todos los derechos reservados.</div>
+      <div class="footer-badges">
+        <span class="pay-badge">💳 Visa</span>
+        <span class="pay-badge">💳 Mastercard</span>
+        <span class="pay-badge">🔒 SSL Seguro</span>
+        <span class="pay-badge">📦 Envío discreto</span>
+      </div>
+      <div class="footer-legal">
+        <a href="#" onclick="openModal('modal-aviso-legal');return false">Aviso legal</a>
+        <a href="#" onclick="openModal('modal-privacidad');return false">Privacidad</a>
+        <a href="#" onclick="openModal('modal-cookies');return false">Cookies</a>
+        <a href="#" onclick="openModal('modal-terminos');return false">T&C</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MODAL: DETALLE PRODUCTO ══ -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal" style="max-width:860px">
+    <button class="modal-close" onclick="closeModal('modal-product')">✕</button>
+    <div class="prod-detail-grid">
+      <div>
+        <div class="prod-detail-img" id="detail-img-wrap"></div>
+      </div>
+      <div>
+        <div class="prod-detail-cat" id="detail-cat"></div>
+        <div class="prod-detail-name" id="detail-name"></div>
+        <div class="prod-detail-rating"><span class="stars" id="detail-stars">★★★★☆</span><span class="rating-count" id="detail-rating-count">(0 valoraciones)</span></div>
+        <div class="prod-detail-price" id="detail-price"></div>
+        <div class="prod-detail-desc" id="detail-desc"></div>
+        <div class="prod-detail-specs" id="detail-specs"></div>
+        <div class="prod-detail-seller" id="detail-seller"></div>
+        <div class="qty-row">
+          <span class="qty-label">Cantidad</span>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeDetailQty(-1)">−</button>
+            <input type="number" id="detail-qty" value="1" min="1" max="99">
+            <button class="qty-btn" onclick="changeDetailQty(1)">+</button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="detail-add-btn" onclick="addToCartFromDetail()">+ Añadir al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: CHECKOUT ══ -->
+<div class="modal-overlay" id="modal-checkout">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="closeModal('modal-checkout')">✕</button>
+    <div class="modal-title">Pago seguro</div>
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step-tab-1">1. Envío</div>
+      <div class="checkout-step" id="step-tab-2">2. Pago</div>
+      <div class="checkout-step" id="step-tab-3">3. Confirmación</div>
+    </div>
+
+    <!-- STEP 1: ENVÍO -->
+    <div class="checkout-panel active" id="step-1">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre</label><input type="text" id="sh-nombre" placeholder="Ana García"></div>
+        <div class="form-group"><label>Apellidos</label><input type="text" id="sh-apellidos" placeholder="López Martínez"></div>
+      </div>
+      <div class="form-group"><label>Dirección</label><input type="text" id="sh-dir" placeholder="Calle Mayor, 12, 3ºA"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Código postal</label><input type="text" id="sh-cp" placeholder="28001" maxlength="5"></div>
+        <div class="form-group"><label>Ciudad</label><input type="text" id="sh-ciudad" placeholder="Madrid"></div>
+      </div>
+      <div class="form-group"><label>Teléfono</label><input type="tel" id="sh-tel" placeholder="612 345 678"></div>
+      <div class="form-error" id="err-step1"></div>
+      <button class="btn btn-primary btn-block btn-lg" style="margin-top:.5rem" onclick="goStep(2)">Continuar →</button>
+    </div>
+
+    <!-- STEP 2: PAGO -->
+    <div class="checkout-panel" id="step-2">
+
+      <!-- Banner tarjeta guardada -->
+      <div id="saved-card-banner" style="display:none;background:var(--s3);border:1px solid var(--fern);border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+          <div style="display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.3rem">💳</span>
+            <div>
+              <div style="font-family:var(--FD);font-size:.9rem;font-weight:700;color:var(--cream)" id="saved-card-mask">•••• •••• •••• ----</div>
+              <div style="font-size:.68rem;color:var(--sage);font-family:var(--FC);letter-spacing:.4px" id="saved-card-holder"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:.4rem">
+            <button class="btn btn-primary btn-sm" onclick="useSavedCard()">Usar esta tarjeta</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteSavedCard()">🗑️ Eliminar</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="card-form-section">
+        <div class="card-chips">
+          <div class="card-chip active" title="Visa">💳 Visa</div>
+          <div class="card-chip" title="Mastercard">💳 MC</div>
+          <div class="card-chip" title="Amex">💳 Amex</div>
+        </div>
+        <div class="form-group">
+          <label>Número de tarjeta</label>
+          <div class="card-input-wrap">
+            <input type="text" id="pay-card" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)" autocomplete="cc-number">
+            <span class="card-icon">💳</span>
+          </div>
+        </div>
+        <div class="form-group"><label>Titular</label><input type="text" id="pay-titular" placeholder="ANA GARCIA LOPEZ" autocomplete="cc-name"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Caducidad</label><input type="text" id="pay-exp" placeholder="MM/AA" maxlength="5" oninput="formatExp(this)" autocomplete="cc-exp"></div>
+          <div class="form-group"><label>CVV</label><input type="password" id="pay-cvv" placeholder="123" maxlength="4" autocomplete="cc-csc"></div>
+        </div>
+
+        <!-- Opción guardar tarjeta -->
+        <div style="background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:.85rem 1rem;margin-bottom:.9rem">
+          <label style="display:flex;align-items:flex-start;gap:.7rem;cursor:pointer">
+            <input type="checkbox" id="save-card-check" style="margin-top:.15rem;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0">
+            <div>
+              <div style="font-family:var(--FC);font-size:.75rem;font-weight:700;letter-spacing:.5px;color:var(--text)">Guardar tarjeta para futuras compras</div>
+              <div style="font-size:.68rem;color:var(--muted);margin-top:.2rem;line-height:1.5">Los datos se cifran con <strong style="color:var(--sage)">AES-256</strong> antes de guardarse. Tu CVV nunca se almacena.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div style="background:var(--s3);border:1px solid var(--b1);border-radius:8px;padding:.7rem 1rem;margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--muted)">
+        🔒 <span>Pago cifrado con AES-256 + SSL/TLS. Datos protegidos en todo momento.</span>
+      </div>
+      <div class="form-error" id="err-step2"></div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn btn-ghost" style="flex:1" onclick="goStep(1)">← Volver</button>
+        <button class="btn btn-warm" style="flex:2" id="btn-pagar" onclick="procesarPago()">Pagar <span id="pay-total-btn">0,00 €</span> →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: CONFIRMACIÓN -->
+    <div class="checkout-panel" id="step-3">
+      <div class="order-confirm">
+        <div class="confirm-icon">🌿</div>
+        <div class="confirm-title">¡Pedido confirmado!</div>
+        <div class="order-num" id="confirm-order-num">#GR-000000</div>
+        <div class="confirm-text">Tu pedido ha sido registrado y será enviado en un plazo de <strong>24–48 horas hábiles</strong>. Recibirás un email de confirmación con el número de seguimiento.</div>
+        <button class="btn btn-primary btn-lg" onclick="closeModal('modal-checkout');showTab('mis-compras')">Ver mis compras →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: NUEVO PRODUCTO ══ -->
+<div class="modal-overlay" id="modal-nuevo-producto">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" onclick="closeModal('modal-nuevo-producto')">✕</button>
+    <div class="modal-title">Publicar producto</div>
+    <div class="form-group"><label>Nombre del producto</label><input type="text" id="prod-nombre" placeholder="Ej: Sustrato Coco Premium 50L" maxlength="100"></div>
+    <div class="form-group"><label>Descripción</label><textarea id="prod-desc" placeholder="Características, uso recomendado, volumen…" maxlength="500"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Precio (€)</label><input type="number" id="prod-precio" placeholder="0.00" min="0.01" step="0.01"></div>
+      <div class="form-group"><label>Stock</label><input type="number" id="prod-stock" placeholder="10" min="1"></div>
+    </div>
+    <div class="form-group"><label>Categoría</label>
+      <select id="prod-categoria">
+        <option value="sustratos">🪨 Sustratos y medios de cultivo</option>
+        <option value="iluminacion">💡 Iluminación</option>
+        <option value="nutricion">🧪 Nutrición y fertilizantes</option>
+        <option value="semillas">🌱 Semillas y genética</option>
+        <option value="riego">💧 Riego y sistemas</option>
+        <option value="control">🌡️ Control ambiental</option>
+        <option value="herramientas">🔧 Herramientas y accesorios</option>
+        <option value="otros">📦 Otros</option>
+      </select>
+    </div>
+    <div class="form-error" id="prod-error"></div>
+    <div style="display:flex;gap:.55rem;margin-top:.5rem">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('modal-nuevo-producto')">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2" onclick="crearProducto()">Publicar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDITAR PRODUCTO ══ -->
+<div class="modal-overlay" id="modal-editar-producto">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" onclick="closeModal('modal-editar-producto')">✕</button>
+    <div class="modal-title">Editar producto</div>
+    <input type="hidden" id="edit-prod-id">
+    <div class="form-group"><label>Nombre</label><input type="text" id="edit-prod-nombre" maxlength="100"></div>
+    <div class="form-group"><label>Descripción</label><textarea id="edit-prod-desc" maxlength="500"></textarea></div>
+    <div class="form-group"><label>Precio (€)</label><input type="number" id="edit-prod-precio" min="0.01" step="0.01"></div>
+    <div class="form-error" id="edit-prod-error"></div>
+    <div style="display:flex;gap:.55rem;margin-top:.5rem">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('modal-editar-producto')">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2" onclick="guardarEdicion()">Guardar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODALES LEGALES ══ -->
+<div class="modal-overlay" id="modal-aviso-legal"><div class="modal" style="max-width:600px">
+  <button class="modal-close" onclick="closeModal('modal-aviso-legal')">✕</button>
+  <div class="modal-title">Aviso Legal</div>
+  <div class="legal-content">
+    <h3>1. Identificación del titular</h3>
+    <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y Comercio Electrónico (LSSI-CE), se informa que el presente sitio web es titularidad de <strong>GreenRoom Grow Shop S.L.</strong>, con domicilio social en Calle de la Botánica, 14, 28001 Madrid, España, CIF: B-XXXXXXXX, inscrita en el Registro Mercantil de Madrid.</p>
+    <h3>2. Objeto y ámbito de aplicación</h3>
+    <p>El presente Aviso Legal regula el acceso y uso del sitio web greenroom.es, así como los servicios de comercio electrónico prestados a través del mismo. El acceso al sitio implica la aceptación plena de estas condiciones.</p>
+    <h3>3. Propiedad intelectual e industrial</h3>
+    <p>Todos los contenidos del sitio web (textos, imágenes, logotipos, código fuente, diseño gráfico) son propiedad exclusiva de GreenRoom Grow Shop S.L. o de terceros que han autorizado su uso. Queda expresamente prohibida su reproducción, distribución o modificación sin autorización previa y por escrito.</p>
+    <h3>4. Responsabilidad</h3>
+    <p>GreenRoom no se responsabiliza de los daños o perjuicios de cualquier naturaleza que pudieran ocasionarse por errores u omisiones en los contenidos, ni por la falta de disponibilidad del servicio.</p>
+    <h3>5. Legislación aplicable y jurisdicción</h3>
+    <p>Las presentes condiciones se rigen por la legislación española. Para la resolución de cualquier controversia, las partes se someten a los Juzgados y Tribunales de Madrid.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-privacidad"><div class="modal" style="max-width:600px">
+  <button class="modal-close" onclick="closeModal('modal-privacidad')">✕</button>
+  <div class="modal-title">Política de Privacidad</div>
+  <div class="legal-content">
+    <h3>1. Responsable del tratamiento</h3>
+    <p>GreenRoom Grow Shop S.L., CIF B-XXXXXXXX. Contacto DPD: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f5f5d46594e4c464b4e4b6f485d4a4a415d404042014a5c">[email&#160;protected]</a></p>
+    <h3>2. Datos que recogemos</h3>
+    <ul><li>Datos de registro: nombre de usuario, email, contraseña hasheada.</li><li>Datos de pedido: dirección de envío, teléfono.</li><li>Datos de navegación: cookies técnicas (ver Política de Cookies).</li></ul>
+    <h3>3. Finalidad y base jurídica</h3>
+    <p>Los datos se tratan para gestionar tu cuenta (art. 6.1.b RGPD), procesar pedidos (art. 6.1.b RGPD) y cumplir obligaciones legales (art. 6.1.c RGPD). <strong>No almacenamos datos de tarjeta de crédito</strong>; el pago se procesa mediante pasarela certificada PCI-DSS.</p>
+    <h3>4. Conservación de datos</h3>
+    <p>Los datos se conservan durante el tiempo necesario para la relación comercial y los plazos legales aplicables (mínimo 5 años según normativa fiscal).</p>
+    <h3>5. Tus derechos</h3>
+    <p>Puedes ejercer derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad enviando un email a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bececcd7c8dfddd7dadfdafed9ccdbdbd0ccd1d1d390dbcd">[email&#160;protected]</a> con copia de tu DNI.</p>
+    <h3>6. Transferencias internacionales</h3>
+    <p>No se realizan transferencias internacionales de datos fuera del Espacio Económico Europeo.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-cookies"><div class="modal" style="max-width:600px">
+  <button class="modal-close" onclick="closeModal('modal-cookies')">✕</button>
+  <div class="modal-title">Política de Cookies</div>
+  <div class="legal-content">
+    <h3>¿Qué son las cookies?</h3>
+    <p>Las cookies son pequeños archivos de texto que se almacenan en tu navegador cuando visitas un sitio web. Facilitan la navegación y permiten recordar tus preferencias.</p>
+    <h3>Cookies que utilizamos</h3>
+    <ul>
+      <li><strong>Cookies técnicas (necesarias):</strong> PHPSESSID — gestión de sesión de usuario. Duración: sesión.</li>
+      <li><strong>Cookies de preferencias:</strong> gr_theme — recuerda el tema visual. Duración: 1 año.</li>
+      <li><strong>Cookies analíticas:</strong> No utilizamos cookies analíticas de terceros sin consentimiento explícito.</li>
+    </ul>
+    <h3>Gestión de cookies</h3>
+    <p>Puedes eliminar o bloquear las cookies desde la configuración de tu navegador. Ten en cuenta que bloquear cookies técnicas puede afectar al funcionamiento del sitio.</p>
+    <h3>Base legal</h3>
+    <p>Las cookies técnicas se basan en el interés legítimo (art. 6.1.f RGPD). Las demás requieren tu consentimiento explícito.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-terminos"><div class="modal" style="max-width:600px">
+  <button class="modal-close" onclick="closeModal('modal-terminos')">✕</button>
+  <div class="modal-title">Términos y Condiciones de Compra</div>
+  <div class="legal-content">
+    <h3>1. Proceso de compra</h3>
+    <p>Al añadir productos al carrito y completar el proceso de pago, el usuario realiza una oferta de compra. El contrato se perfecciona cuando GreenRoom envía la confirmación del pedido por email.</p>
+    <h3>2. Precios y pagos</h3>
+    <p>Todos los precios incluyen IVA (21%). Los pagos se realizan mediante tarjeta de crédito/débito (Visa, Mastercard, Amex) a través de pasarela de pago cifrada. No se aceptan transferencias bancarias.</p>
+    <h3>3. Envíos</h3>
+    <p>Envíos a España peninsular en 24–48h hábiles. Canarias, Ceuta y Melilla: 3–5 días hábiles. Envío gratuito para pedidos superiores a 50 €. Embalaje 100% discreto y sin referencias comerciales exteriores.</p>
+    <h3>4. Devoluciones y desistimiento</h3>
+    <p>Dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento, conforme al art. 102 del Real Decreto Legislativo 1/2007. Los productos deben devolverse en su estado original y sin abrir. Los gastos de devolución corren a cargo del comprador salvo defecto del producto.</p>
+    <h3>5. Garantías</h3>
+    <p>Todos los productos disponen de la garantía legal de 2 años conforme a la normativa europea de protección al consumidor.</p>
+    <h3>6. Resolución de litigios</h3>
+    <p>Para reclamaciones puedes acudir a la plataforma ODR de la UE: ec.europa.eu/consumers/odr. También puedes contactarnos en <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8abb7a8b7aaacbd98bfaabdbdb6aab7b7b5f6bdab">[email&#160;protected]</a>.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-copyright"><div class="modal" style="max-width:600px">
+  <button class="modal-close" onclick="closeModal('modal-copyright')">✕</button>
+  <div class="modal-title">Copyright y Derechos de Uso</div>
+  <div class="legal-content">
+    <h3>© 2025 GreenRoom Grow Shop S.L.</h3>
+    <p>Todos los derechos reservados. El contenido de este sitio web, incluyendo pero no limitado a textos, imágenes, logotipos, iconos, fotografías, código fuente, diseño y estructura, está protegido por las leyes de propiedad intelectual e industrial aplicables en España y en la Unión Europea.</p>
+    <h3>Marcas registradas</h3>
+    <p>«GreenRoom», el logotipo de hoja y cualesquiera otras marcas que aparezcan en este sitio son marcas registradas de GreenRoom Grow Shop S.L. Su uso sin autorización expresa constituye una infracción de los derechos de marca.</p>
+    <h3>Uso permitido</h3>
+    <p>Se autoriza la visualización y descarga de los contenidos únicamente para uso personal y no comercial, siempre que se mantenga intacta la mención de autoría y derechos.</p>
+    <h3>Uso prohibido</h3>
+    <ul>
+      <li>Reproducción, distribución o comunicación pública sin autorización escrita.</li>
+      <li>Uso con fines comerciales o publicitarios.</li>
+      <li>Modificación, transformación o creación de obras derivadas.</li>
+      <li>Extracción masiva de datos (scraping).</li>
+    </ul>
+    <h3>Licencias de software</h3>
+    <p>Este sitio utiliza software de código abierto bajo sus respectivas licencias (MIT, Apache 2.0). Las fuentes tipográficas son servidas por Google Fonts bajo licencia SIL Open Font License.</p>
+    <h3>Contacto por infracciones</h3>
+    <p>Para notificar posibles infracciones de derechos de autor: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8fe3eae8eee3cfe8fdeaeae1fde0e0e2a1eafc">[email&#160;protected]</a></p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-sobre"><div class="modal" style="max-width:580px">
+  <button class="modal-close" onclick="closeModal('modal-sobre')">✕</button>
+  <div class="modal-title">Sobre GreenRoom</div>
+  <div class="legal-content">
+    <h3>Nuestra historia</h3>
+    <p>GreenRoom nació en 2018 con una misión simple: ofrecer a los cultivadores apasionados acceso a los mejores productos del mercado, con asesoramiento experto y envíos discretos.</p>
+    <h3>¿Por qué elegirnos?</h3>
+    <ul>
+      <li>✅ Más de 500 productos seleccionados por expertos</li>
+      <li>✅ Envío discreto en 24–48h a toda España</li>
+      <li>✅ Atención al cliente especializada</li>
+      <li>✅ Devoluciones sin preguntas en 14 días</li>
+      <li>✅ Pago 100% seguro con cifrado SSL</li>
+    </ul>
+    <h3>Contacto</h3>
+    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a4cccbc8c5e4c3d6c1c1cad6cbcbc98ac1d7">[email&#160;protected]</a> | Tel: 91 234 56 78 | L–V 9:00–18:00</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-envios"><div class="modal" style="max-width:580px">
+  <button class="modal-close" onclick="closeModal('modal-envios')">✕</button>
+  <div class="modal-title">Envíos y Devoluciones</div>
+  <div class="legal-content">
+    <h3>Plazos de entrega</h3>
+    <ul><li>España peninsular: 24–48 horas hábiles</li><li>Baleares: 48–72 horas hábiles</li><li>Canarias, Ceuta y Melilla: 3–5 días hábiles</li><li>Europa: 3–7 días hábiles</li></ul>
+    <h3>Costes de envío</h3>
+    <p>Envío gratuito para pedidos superiores a 50 €. Para pedidos inferiores: 4,95 € España peninsular / 9,95 € islas y territorios.</p>
+    <h3>Embalaje</h3>
+    <p>Todos los paquetes se envían en embalaje neutro y discreto, sin referencias comerciales en el exterior.</p>
+    <h3>Devoluciones</h3>
+    <p>14 días naturales desde la recepción. Producto en estado original. Solicitud en <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abcfceddc4c7dec8c2c4c5ced8ebccd9cecec5d9c4c4c685ced8">[email&#160;protected]</a>. Reembolso en 5–7 días hábiles tras recepción.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-faq"><div class="modal" style="max-width:580px">
+  <button class="modal-close" onclick="closeModal('modal-faq')">✕</button>
+  <div class="modal-title">Preguntas Frecuentes</div>
+  <div class="legal-content">
+    <h3>¿Cómo puedo hacer un pedido?</h3>
+    <p>Regístrate, añade productos al carrito y completa el proceso de pago con tu tarjeta.</p>
+    <h3>¿Mis datos de tarjeta están seguros?</h3>
+    <p>Sí. No almacenamos datos de tarjeta. El pago se procesa mediante pasarela certificada PCI-DSS con cifrado SSL.</p>
+    <h3>¿Puedo cancelar mi pedido?</h3>
+    <p>Sí, mientras no haya sido enviado. Contacta con <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="186b7768776a6c7d587f6a7d7d766a777775367d6b">[email&#160;protected]</a> lo antes posible.</p>
+    <h3>¿Emiten factura?</h3>
+    <p>Sí. Solicítala en <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2543444651505744464c4a4b65425740404b574a4a480b4056">[email&#160;protected]</a> indicando tu número de pedido y NIF/CIF.</p>
+    <h3>¿Venden al por mayor?</h3>
+    <p>Sí, disponemos de tarifas B2B. Contacta en <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a6cbc7dfc9d4cfd5d2c7e6c1d4c3c3c8d4c9c9cb88c3d5">[email&#160;protected]</a>.</p>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="modal-contacto"><div class="modal" style="max-width:480px">
+  <button class="modal-close" onclick="closeModal('modal-contacto')">✕</button>
+  <div class="modal-title">Contacto</div>
+  <div class="form-group"><label>Tu nombre</label><input type="text" id="c-nombre" placeholder="Ana García"></div>
+  <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="ana@email.com"></div>
+  <div class="form-group"><label>Asunto</label>
+    <select id="c-asunto"><option>Consulta sobre producto</option><option>Estado de mi pedido</option><option>Devolución</option><option>Facturación</option><option>Otro</option></select>
+  </div>
+  <div class="form-group"><label>Mensaje</label><textarea id="c-msg" placeholder="Escribe tu mensaje aquí…" style="min-height:110px"></textarea></div>
+  <button class="btn btn-primary btn-block" onclick="enviarContacto()">Enviar mensaje →</button>
+</div></div>
+
+<div id="toast"><span class="t-icon"></span><span id="toast-msg"></span></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══════════════════════════════════════
+//  CONFIG & STATE
+// ══════════════════════════════════════
+const API = 'http://localhost:8000';
+let currentUser = null;
+let cart = [];
+let currentDetailProduct = null;
+let currentFilter = 'todos';
+
+// Credenciales de administrador (en producción real esto va en el backend)
+const ADMIN_EMAIL    = 'demo@greenroom.es';
+const ADMIN_HASH     = '56e2b43b49464859e9bb0fe719fdda7db014903d47f38125e49526b1a21c7cf0';
+const ADMIN_USERNAME = 'Admin GreenRoom';
+
+const DEMO_USERS = [
+  { email:'maria.garcia@gmail.com', hash:'5bf7a0d454cd076a844b348abaddcc55e4a55d3872682e91acf74b922cf74aaa', id:2, username:'maria_cultiva', isAdmin:false },
+  { email:'carlos.lopez@hotmail.com', hash:'a02a52afcb50cb9a8e81edba9025a2be159be5442184b956842b49dedfb12844', id:3, username:'carlosgrower', isAdmin:false },
+  { email:'ana.martinez@gmail.com', hash:'ab5742029b9090d2c94461090c174d9f0adf2b8bb12e52a2bc7e6fce8e398bfd', id:4, username:'ana_verde', isAdmin:false },
+  { email:'pedro.sanchez@yahoo.es', hash:'31b8812f451d32303fe97473cb2a1fdaf310869ef37dd01ef09607b06e82c2d0', id:5, username:'pedrosanchez', isAdmin:false },
+  { email:'laura.fernandez@gmail.com', hash:'e3e62922ac06a7068951d5965c562331235b36d15f9417aa6ffbe8404a80ec75', id:6, username:'laura_flora', isAdmin:false },
+  { email:'javier.ruiz@outlook.com', hash:'f13cbbe19e4fd3d2110b79b08f6c50f2913e57fc739f708a9dafa6b822f87f9c', id:7, username:'javierruiz', isAdmin:false },
+  { email:'sofia.moreno@gmail.com', hash:'1f5b00cf82e8ba8ad7fc4e213ec5cda031f4eeb8f21036fca83bf6e2264b4959', id:8, username:'sofia_green', isAdmin:false },
+  { email:'miguel.jimenez@hotmail.es', hash:'d58f8566e6508ea3511f1a3b6053caadc50133fde25dd7bf681ceda04105f34a', id:9, username:'miguelj', isAdmin:false },
+  { email:'elena.torres@gmail.com', hash:'6ce6a9978528f9f471c02f3c3782f4f533ea2232c4bde34d55c9c196d7739fae', id:10, username:'elena_cultivo', isAdmin:false },
+  { email:'david.flores@yahoo.es', hash:'34f4d7b2a6912317bc06b65614214b5f8c0eb76c27161909f3d7c0f66f8c09d2', id:11, username:'davidflores', isAdmin:false },
+];
+
+async function hashPassword(pass) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ══════════════════════════════════════
+//  CIFRADO AES-256 (Web Crypto API)
+// ══════════════════════════════════════
+async function getEncryptionKey(userId) {
+  // Derivamos una clave única por usuario usando PBKDF2
+  const seed    = `GreenRoom_${userId}_SecureKey_2025`;
+  const keyMat  = await crypto.subtle.importKey('raw', new TextEncoder().encode(seed), 'PBKDF2', false, ['deriveKey']);
+  const salt    = new TextEncoder().encode(`GR_SALT_${userId}`);
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:100000, hash:'SHA-256' },
+    keyMat,
+    { name:'AES-GCM', length:256 },
+    false,
+    ['encrypt','decrypt']
+  );
+}
+
+async function encryptData(plainText, userId) {
+  const key = await getEncryptionKey(userId);
+  const iv  = crypto.getRandomValues(new Uint8Array(12));
+  const enc = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(plainText));
+  // Guardamos IV + datos cifrados como base64
+  const combined = new Uint8Array(iv.byteLength + enc.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(enc), iv.byteLength);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function decryptData(cipherB64, userId) {
+  try {
+    const key      = await getEncryptionKey(userId);
+    const combined = Uint8Array.from(atob(cipherB64), c => c.charCodeAt(0));
+    const iv       = combined.slice(0, 12);
+    const data     = combined.slice(12);
+    const dec      = await crypto.subtle.decrypt({ name:'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(dec);
+  } catch { return null; }
+}
+
+// ══════════════════════════════════════
+//  TARJETA GUARDADA (cifrada)
+// ══════════════════════════════════════
+async function saveCardEncrypted(card, titular, exp) {
+  if (!currentUser) return;
+  const payload = JSON.stringify({ card, titular, exp });
+  const encrypted = await encryptData(payload, currentUser.id);
+  const storageKey = `gr_card_${currentUser.id}`;
+  try { sessionStorage.setItem(storageKey, encrypted); } catch {}
+  // Mostramos solo los últimos 4 dígitos
+  renderSavedCardBanner(card.slice(-4), titular);
+}
+
+async function loadSavedCard() {
+  if (!currentUser) return;
+  const storageKey = `gr_card_${currentUser.id}`;
+  const encrypted = sessionStorage.getItem(storageKey);
+  if (!encrypted) { hideSavedCardBanner(); return; }
+  const json = await decryptData(encrypted, currentUser.id);
+  if (!json) { hideSavedCardBanner(); return; }
+  try {
+    const { card, titular } = JSON.parse(json);
+    renderSavedCardBanner(card.slice(-4), titular);
+  } catch { hideSavedCardBanner(); }
+}
+
+function renderSavedCardBanner(last4, holder) {
+  document.getElementById('saved-card-banner').style.display = '';
+  document.getElementById('saved-card-mask').textContent  = `•••• •••• •••• ${last4}`;
+  document.getElementById('saved-card-holder').textContent = holder.toUpperCase();
+}
+function hideSavedCardBanner() {
+  document.getElementById('saved-card-banner').style.display = 'none';
+}
+
+async function useSavedCard() {
+  if (!currentUser) return;
+  const encrypted = sessionStorage.getItem(`gr_card_${currentUser.id}`);
+  if (!encrypted) return;
+  const json = await decryptData(encrypted, currentUser.id);
+  if (!json) return;
+  try {
+    const { card, titular, exp } = JSON.parse(json);
+    // Rellenamos el formulario con datos descifrados
+    const formatted = card.replace(/(.{4})/g,'$1 ').trim();
+    document.getElementById('pay-card').value    = formatted;
+    document.getElementById('pay-titular').value = titular;
+    document.getElementById('pay-exp').value     = exp;
+    document.getElementById('pay-cvv').value     = '';
+    document.getElementById('save-card-check').checked = true;
+    toast('Tarjeta cargada. Introduce tu CVV para continuar. 🔒');
+  } catch {}
+}
+
+function deleteSavedCard() {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar la tarjeta guardada?')) return;
+  sessionStorage.removeItem(`gr_card_${currentUser.id}`);
+  hideSavedCardBanner();
+  document.getElementById('pay-card').value    = '';
+  document.getElementById('pay-titular').value = '';
+  document.getElementById('pay-exp').value     = '';
+  document.getElementById('pay-cvv').value     = '';
+  toast('Tarjeta eliminada ✓');
+}
+
+// ══════════════════════════════════════
+//  VALIDACIÓN CONTRASEÑA FUERTE
+// ══════════════════════════════════════
+function checkPasswordStrength(pass) {
+  return {
+    len:     pass.length >= 12,
+    upper:   /[A-Z]/.test(pass),
+    lower:   /[a-z]/.test(pass),
+    special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pass),
+    number:  /[0-9]/.test(pass)
+  };
+}
+
+function updatePassStrength(pass) {
+  const r = checkPasswordStrength(pass);
+  const score = [r.len, r.upper, r.lower, r.special, r.number].filter(Boolean).length;
+
+  const fill = document.getElementById('pass-strength-fill');
+  const txt  = document.getElementById('pass-strength-txt');
+  const colors = ['','#c05040','#c08040','#b0a040','#7a9050','#5e7250'];
+  const labels = ['','Muy débil','Débil','Regular','Buena','Fuerte 🔒'];
+
+  fill.style.width      = `${score*20}%`;
+  fill.style.background = colors[score] || colors[1];
+  txt.textContent       = pass.length ? labels[score] : '';
+  txt.style.color       = colors[score] || colors[1];
+
+  // Indicadores individuales
+  const ok = (id, cond) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.color = cond ? 'var(--leaf)' : 'var(--subtle)';
+    el.textContent = (cond ? '✓ ' : '✗ ') + el.textContent.slice(2);
+  };
+  ok('req-len',     r.len);
+  ok('req-upper',   r.upper);
+  ok('req-lower',   r.lower);
+  ok('req-special', r.special);
+}
+
+// Imágenes de Unsplash por categoría (libres de derechos)
+const CAT_IMAGES = {
+  sustratos:   'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=600&q=80',
+  iluminacion: 'https://images.unsplash.com/photo-1573741004614-68c0a37e5e72?w=600&q=80',
+  nutricion:   'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
+  semillas:    'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=80',
+  riego:       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+  control:     'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=600&q=80',
+  herramientas:'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&q=80',
+  otros:       'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=600&q=80',
+  armarios:    'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=600&q=80',
+  ventilacion: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=600&q=80',
+  plagas:      'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
+};
+
+const CAT_EMOJI = { sustratos:'🪨', iluminacion:'💡', nutricion:'🧪', semillas:'🌱', riego:'💧', control:'🌡️', herramientas:'🔧', otros:'📦', armarios:'🏠', ventilacion:'💨', plagas:'🛡️' };
+
+
+const DEMO_PRODUCTS = [
+
+  // ════════════════════════════════════════
+  //  🌱 SEMILLAS
+  // ════════════════════════════════════════
+  { id:1, nombre:'Zillions Barneys Farm', imagen:'https://www.alchimiaweb.com/img_art/n/zillions-barneys-farm-fem_21605n.jpg',
+    descripcion:'Cruce Original Zkittlez × Lemon Cherry Gelato. Semillas de la más alta calidad para coleccionistas. Perfil afrutado y producción de primer nivel.',
+    precio:'9.00', precioAnterior:'15.00', vendedor:'Barneys Farm', user_id:0, categoria:'semillas', stock:20, rating:4.8, reviews:42,
+    specs:[['Tipo','Feminizada'],['Genética','Zkittlez × Lemon Cherry Gelato'],['Banco','Barneys Farm'],['Perfil','Afrutado intenso'],['Uso','Coleccionista']] },
+
+  { id:2, nombre:'Gary Payton Barneys Farm', imagen:'https://www.alchimiaweb.com/img_art/n/gary-payton-barneys-farm_17876n.jpg',
+    descripcion:'Semillas feminizadas Gary Payton. Efecto potente, sabor dulce y picante. Producción masiva con calidad excepcional.',
+    precio:'8.52', precioAnterior:'14.19', vendedor:'Barneys Farm', user_id:0, categoria:'semillas', stock:15, rating:4.9, reviews:87,
+    specs:[['Tipo','Feminizada'],['Efecto','Potente'],['Sabor','Dulce y picante'],['Producción','Masiva'],['Banco','Barneys Farm']] },
+
+  { id:3, nombre:'Sweet Pure CB Auto Sweet Seeds', imagen:'https://www.alchimiaweb.com/img_art/n/sweet-pure-cbd-auto-sweet-seeds_13453n.jpg',
+    descripcion:'Variedad automática de Sweet Seeds con aroma dulce y afrutado, crecimiento compacto y cosecha rápida. Genética estable ideal para coleccionistas.',
+    precio:'21.00', precioAnterior:null, vendedor:'Sweet Seeds', user_id:0, categoria:'semillas', stock:18, rating:4.7, reviews:31,
+    specs:[['Tipo','Automática'],['Aroma','Dulce y afrutado'],['Porte','Compacto'],['Banco','Sweet Seeds'],['Cosecha','Rápida']] },
+
+  { id:4, nombre:'Tropicanna Mimosa Feminizada', imagen:'https://www.alchimiaweb.com/img_art/n/tropicanna-mimosa-feminizada_16893n.jpg',
+    descripcion:'Mimosa Tropicanna, semilla feminizada vigorosa y exótica con perfil cítrico, alta producción y gran estabilidad. Precio por unidad.',
+    precio:'1.35', precioAnterior:null, vendedor:'Semillas Granel', user_id:0, categoria:'semillas', stock:50, rating:4.6, reviews:19,
+    specs:[['Tipo','Feminizada granel'],['Perfil','Cítrico exótico'],['Vigor','Alto'],['Estabilidad','Muy alta'],['Formato','Precio/ud']] },
+
+  { id:5, nombre:'Tropicanna Poison F1 Fast Version Sweet Seeds', imagen:'https://www.alchimiaweb.com/img_art/n/tropicanna-poison-f1-fast-version-sweet-seeds_13436n.jpg',
+    descripcion:'Fast Version con genética Tropicanna Poison. Floración acelerada sin perder potencia ni sabor. Producción superior.',
+    precio:'12.08', precioAnterior:'20.13', vendedor:'Sweet Seeds', user_id:0, categoria:'semillas', stock:22, rating:4.8, reviews:64,
+    specs:[['Tipo','Fast Version Fem.'],['Floración','Acelerada'],['Perfil','Tropical + Poison'],['Banco','Sweet Seeds'],['Ahorro','40%']] },
+
+  { id:6, nombre:'Skunk1 Sensi Seeds', imagen:'https://www.alchimiaweb.com/img_art/n/skunk-1-fem-sensi-seeds_5484n.jpg',
+    descripcion:'Clásica variedad Skunk1 de Sensi Seeds. Genética histórica de alta producción y sabor inconfundible. Recomendada para principiantes.',
+    precio:'12.60', precioAnterior:'18.00', vendedor:'Sensi Seeds', user_id:0, categoria:'semillas', stock:25, rating:4.9, reviews:203,
+    specs:[['Tipo','Feminizada clásica'],['Banco','Sensi Seeds'],['Producción','Alta'],['Dificultad','Principiante'],['Ahorro','30%']] },
+
+  // ════════════════════════════════════════
+  //  🪨 SUSTRATOS
+  // ════════════════════════════════════════
+  { id:7, nombre:'Coco Professional Plus Canna 50L', imagen:'https://www.alchimiaweb.com/img_art/n/canna-coco-professional-plus-50l_2249n.jpg',
+    descripcion:'Sustrato de fibra de coco premium 100% natural. Tamponado con Ca y Mg. Sin patógenos. Excelente aireación y retención de agua. Reutilizable hasta 3 ciclos.',
+    precio:'24.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'sustratos', stock:30, rating:4.8, reviews:112,
+    specs:[['Volumen','50L'],['Tipo','Fibra de coco'],['Tamponado','Ca + Mg'],['Reutilizable','3 ciclos'],['pH','5.5–6.5']] },
+
+  { id:8, nombre:'Terra Professional Plus Canna 50L', imagen:'https://www.alchimiaweb.com/img_art/n/terra-professional-plus-canna-50l_397n.jpg',
+    descripcion:'Mezcla de turba aireada y corteza de calidad superior. Enriquecida con N y microelementos. Ideal para plantas de interior. pH ajustado.',
+    precio:'19.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'sustratos', stock:28, rating:4.7, reviews:88,
+    specs:[['Volumen','50L'],['Composición','Turba + corteza'],['Nutrientes','N + microelementos'],['pH','5.8–6.5'],['Uso','Interior y exterior']] },
+
+  { id:9, nombre:'Light Mix Biobizz 50L', imagen:'https://www.alchimiaweb.com/img_art/n/biobizz-light-mix-50l_367n.jpg',
+    descripcion:'Mezcla ligera orgánica de Biobizz. Bajo contenido en nutrientes para control total. Compatible con Bio Grow y Bio Bloom.',
+    precio:'17.50', precioAnterior:null, vendedor:'Biobizz', user_id:0, categoria:'sustratos', stock:35, rating:4.6, reviews:74,
+    specs:[['Volumen','50L'],['Tipo','Orgánica ligera'],['EC','1.0–1.5'],['Complemento','Bio Grow + Bio Bloom'],['Certificación','Orgánica']] },
+
+  { id:10, nombre:'Aqua Clay Pebbles Canna 45L', imagen:'https://www.alchimiaweb.com/img_art/n/arcilla-expandida-canna-45l_2248n.jpg',
+    descripcion:'Arcilla expandida de alta porosidad para sistemas hidropónicos. pH neutro, libre de patógenos. Excelente drenaje y oxigenación radicular.',
+    precio:'16.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'sustratos', stock:20, rating:4.7, reviews:56,
+    specs:[['Volumen','45L'],['Tipo','Arcilla expandida'],['pH','Neutro'],['Uso','Hidropónico'],['Drenaje','Excelente']] },
+
+  // ════════════════════════════════════════
+  //  🧪 FERTILIZANTES
+  // ════════════════════════════════════════
+  { id:11, nombre:'Pro Bloom Athena 453g', imagen:'https://www.alchimiaweb.com/img_art/n/athena-pro-bloom-453g_18697n.jpg',
+    descripcion:'Fertilizante base línea profesional Athena para floración. Rico en P, K y microelementos. 100% soluble para hidroponía y riego automático.',
+    precio:'98.10', precioAnterior:'109.00', vendedor:'Athena', user_id:0, categoria:'nutricion', stock:10, rating:4.9, reviews:38,
+    specs:[['Formato','Polvo 453g'],['Fase','Floración'],['Solubilidad','100%'],['Sistemas','Tierra, coco, hidro'],['Ahorro','10%']] },
+
+  { id:12, nombre:'Pro Grow Athena 453g', imagen:'https://www.alchimiaweb.com/img_art/n/athena-pro-grow-453g_18695n.jpg',
+    descripcion:'Fertilizante base Athena para fase vegetativa. Alta solubilidad. Ideal para riego automático y cultivos hidropónicos de alto rendimiento.',
+    precio:'98.10', precioAnterior:'109.00', vendedor:'Athena', user_id:0, categoria:'nutricion', stock:10, rating:4.9, reviews:29,
+    specs:[['Formato','Polvo 453g'],['Fase','Vegetativa'],['Solubilidad','Alta'],['Sistemas','Riego automático'],['Ahorro','10%']] },
+
+  { id:13, nombre:'Pro Core Athena 453g', imagen:'https://www.alchimiaweb.com/img_art/n/athena-pro-core-453g_18693n.jpg',
+    descripcion:'Fertilizante base soluble Athena. Alto contenido en N, Ca y microelementos esenciales. Compatible con riego automático e hidroponía.',
+    precio:'98.10', precioAnterior:'109.00', vendedor:'Athena', user_id:0, categoria:'nutricion', stock:8, rating:4.8, reviews:22,
+    specs:[['Contenido','N + Ca + microelementos'],['Formato','Polvo 453g'],['Compatible','Riego automático'],['Sistemas','Hidropónico'],['Ahorro','10%']] },
+
+  { id:14, nombre:'Pro Balance Athena 453g', imagen:'https://www.alchimiaweb.com/img_art/n/athena-pro-balance-453g_18699n.jpg',
+    descripcion:'Estabilizador de pH de precisión para fertirrigación avanzada. Mezcla 40-120g/L para soluciones homogéneas y estables de larga duración.',
+    precio:'98.10', precioAnterior:'109.00', vendedor:'Athena', user_id:0, categoria:'nutricion', stock:8, rating:4.8, reviews:17,
+    specs:[['Función','Estabilizador pH'],['Mezcla','40–120g/L'],['Uso','Fertirrigación'],['Resultado','Solución estable'],['Ahorro','10%']] },
+
+  { id:15, nombre:'Quantum Massive Powdershot Dutch Pro 50g', imagen:'https://www.alchimiaweb.com/img_art/n/dutch-pro-quantum-massive_19254n.jpg',
+    descripcion:'Potenciador PK en polvo para floración final. Endurece y mejora rendimiento. Sobre listo para 100L. Máxima eficacia en las últimas semanas.',
+    precio:'10.62', precioAnterior:'12.50', vendedor:'Dutch Pro', user_id:0, categoria:'nutricion', stock:25, rating:4.7, reviews:44,
+    specs:[['Formato','Polvo 50g'],['Dosificación','1 sobre / 100L'],['Función','PK floración'],['Efecto','Endurece cogollos'],['Ahorro','15%']] },
+
+  { id:16, nombre:'Silica Dutch Pro 250ml', imagen:'https://www.alchimiaweb.com/img_art/n/silica-dutch-pro-250ml_17429n.jpg',
+    descripcion:'Ácido monosilícico de alta calidad. Refuerza tallos y mejora la resistencia. Apto para tierra, coco e hidroponía. Plantas más sólidas y resistentes.',
+    precio:'35.70', precioAnterior:'42.00', vendedor:'Dutch Pro', user_id:0, categoria:'nutricion', stock:18, rating:4.8, reviews:33,
+    specs:[['Formato','250ml'],['Activo','Ácido monosilícico'],['Función','Refuerzo estructural'],['Compatible','Tierra, coco, hidro'],['Ahorro','15%']] },
+
+  { id:17, nombre:'Scorpion Red Power 250ml', imagen:'https://www.alchimiaweb.com/img_art/n/scorpion-red-power-250ml_14219n.jpg',
+    descripcion:'Estimulador de floración y engorde de cogollos. Formulación concentrada para máximo rendimiento en fase final del cultivo.',
+    precio:'12.40', precioAnterior:'15.50', vendedor:'Red Power', user_id:0, categoria:'nutricion', stock:22, rating:4.7, reviews:56,
+    specs:[['Formato','250ml'],['Fase','Floración final'],['Función','Engorde cogollos'],['Concentración','Alta'],['Ahorro','20%']] },
+
+  { id:18, nombre:'Bio Grow Biobizz 1L', imagen:'https://www.alchimiaweb.com/img_art/n/bio-grow-biobizz-1l_379n.jpg',
+    descripcion:'Abono orgánico líquido para crecimiento. NPK 4.0-3.0-6.0 con +70 microelementos, ácidos húmicos y algas marinas. Estimula la microbiota del sustrato.',
+    precio:'14.90', precioAnterior:null, vendedor:'Biobizz', user_id:0, categoria:'nutricion', stock:40, rating:4.8, reviews:143,
+    specs:[['NPK','4.0-3.0-6.0'],['Formato','1L'],['Fase','Crecimiento'],['Certificación','Orgánico'],['Microelementos','+70']] },
+
+  { id:19, nombre:'Bio Bloom Biobizz 1L', imagen:'https://www.alchimiaweb.com/img_art/n/bio-bloom-biobizz-1l_381n.jpg',
+    descripcion:'Fertilizante orgánico de floración Biobizz. NPK 2.0-7.0-4.0 con enzimas y aminoácidos. Cogollos compactos, aromáticos y de gran densidad.',
+    precio:'14.90', precioAnterior:null, vendedor:'Biobizz', user_id:0, categoria:'nutricion', stock:38, rating:4.8, reviews:128,
+    specs:[['NPK','2.0-7.0-4.0'],['Formato','1L'],['Fase','Floración'],['Certificación','Orgánico'],['Enzimas','Incluidas']] },
+
+  { id:20, nombre:'Top Max Biobizz 500ml', imagen:'https://www.alchimiaweb.com/img_art/n/biobizz-top-max-500ml_385n.jpg',
+    descripcion:'Estimulador 100% orgánico de floración. Aumenta tamaño y peso de las flores, mejora absorción de nutrientes y potencia el perfil aromático.',
+    precio:'16.90', precioAnterior:null, vendedor:'Biobizz', user_id:0, categoria:'nutricion', stock:30, rating:4.9, reviews:97,
+    specs:[['Formato','500ml'],['Tipo','100% Orgánico'],['Activos','Ácidos húmicos y fúlvicos'],['Fase','Floración'],['Efecto','Aumento peso flores']] },
+
+  { id:21, nombre:'Terra Vega Canna 1L', imagen:'https://www.alchimiaweb.com/img_art/n/canna-terra-vega-1l_393n.jpg',
+    descripcion:'Fertilizante base Canna para crecimiento en tierra. Fácil de usar, absorción rápida. Compatible con riego manual y automático.',
+    precio:'12.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'nutricion', stock:35, rating:4.8, reviews:162,
+    specs:[['Formato','1L'],['Fase','Crecimiento'],['Sustrato','Tierra'],['Absorción','Rápida'],['Nivel','Todos los niveles']] },
+
+  { id:22, nombre:'Terra Flores Canna 1L', imagen:'https://www.alchimiaweb.com/img_art/n/canna-terra-flores-1l_395n.jpg',
+    descripcion:'Fertilizante de floración Canna para tierra. Flores compactas y resinosas. Compatible con PK 13/14 y Boost Accelerator para máximos resultados.',
+    precio:'12.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'nutricion', stock:35, rating:4.8, reviews:148,
+    specs:[['Formato','1L'],['Fase','Floración'],['Sustrato','Tierra'],['Compatible','PK 13/14 + Boost'],['Nivel','Todos los niveles']] },
+
+  { id:23, nombre:'PK 13/14 Canna 250ml', imagen:'https://www.alchimiaweb.com/img_art/n/canna-pk-13-14-250ml_421n.jpg',
+    descripcion:'Potenciador clásico de floración Canna. Fósforo (13) y potasio (14) para máxima densidad y peso de cogollos. Aplicar en semanas 5-6 de floración.',
+    precio:'9.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'nutricion', stock:45, rating:4.9, reviews:211,
+    specs:[['Formato','250ml'],['P','13'],['K','14'],['Fase','Semanas 5–6'],['Sistemas','Tierra, coco, hidro']] },
+
+  { id:24, nombre:'Rhizotonic Canna 250ml', imagen:'https://www.alchimiaweb.com/img_art/n/rhizotonic-canna-250ml_423n.jpg',
+    descripcion:'Estimulador radicular Canna con vitaminas B1 y B2. Favorece el enraizamiento en trasplantes y esquejes. Resultados visibles en 72h.',
+    precio:'11.90', precioAnterior:null, vendedor:'Canna', user_id:0, categoria:'nutricion', stock:40, rating:4.9, reviews:189,
+    specs:[['Formato','250ml'],['Activos','Vitaminas B1 + B2'],['Uso','Trasplantes + esquejes'],['Efecto','Enraizamiento rápido'],['Visible','72h']] },
+
+  { id:25, nombre:'Delta 9 Cannabiogen 1L', imagen:'https://www.alchimiaweb.com/img_art/n/delta-9-cannabiogen-1l_639n.jpg',
+    descripcion:'Estimulador de floración orgánico 100% de Cannabiogen. Flores densas, menos distancia entre nudos, más resina. 5ml/L una vez por semana.',
+    precio:'22.90', precioAnterior:null, vendedor:'Cannabiogen', user_id:0, categoria:'nutricion', stock:20, rating:4.8, reviews:88,
+    specs:[['Formato','1L'],['Tipo','100% Orgánico'],['Dosis','5ml/L semanal'],['Fase','Floración'],['Efecto','Resina + densidad']] },
+
+  // ════════════════════════════════════════
+  //  💡 ILUMINACIÓN
+  // ════════════════════════════════════════
+  { id:26, nombre:'Led Apollo 550W Lumatek', imagen:'https://www.alchimiaweb.com/img_art/n/lumatek-apollo-550w-led_20498n.jpg',
+    descripcion:'Lumatek APOLLO 550W, el LED para armarios de 120×120cm más fiable del mercado. Espectro completo, alta eficiencia y bajo consumo térmico.',
+    precio:'420.00', precioAnterior:null, vendedor:'Lumatek', user_id:0, categoria:'iluminacion', stock:5, rating:4.9, reviews:34,
+    specs:[['Potencia','550W'],['Cobertura','120×120cm'],['Tipo','LED espectro completo'],['Marca','Lumatek'],['Eficiencia','Alta']] },
+
+  { id:27, nombre:'Luminaria Led Ignator Compact T720W', imagen:'https://www.alchimiaweb.com/img_art/n/luminaria-led-ignator-compact-720w_18453n.jpg',
+    descripcion:'LED Ignator 720W de alto rendimiento. Espectro completo, driver externo, eficiencia superior a 2.8 µmol/J para armarios profesionales.',
+    precio:'172.50', precioAnterior:'230.00', vendedor:'Ignator', user_id:0, categoria:'iluminacion', stock:8, rating:4.8, reviews:61,
+    specs:[['Potencia','720W'],['Eficiencia','>2.8 µmol/J'],['Driver','Externo'],['Espectro','Full'],['Ahorro','25%']] },
+
+  { id:28, nombre:'Luminaria HPS Black Panther 1000W', imagen:'https://www.alchimiaweb.com/img_art/n/black-panther-hps-1000w_16739n.jpg',
+    descripcion:'Luminaria HPS 1000W con bombilla M3 1000W 400V. Función superlúmenes y regulador de potencia. Máximo rendimiento en floración.',
+    precio:'148.00', precioAnterior:'185.00', vendedor:'Black Panther', user_id:0, categoria:'iluminacion', stock:6, rating:4.7, reviews:48,
+    specs:[['Potencia','1000W'],['Tipo','HPS 400V'],['Función','Superlúmenes'],['Incluye','Bombilla M3 1000W'],['Ahorro','20%']] },
+
+  { id:29, nombre:'Led Vegetative 35W Farming Monkey', imagen:'https://images.unsplash.com/photo-1573741004614-68c0a37e5e72?w=400&q=80',
+    descripcion:'Luminaria LED de 35W diseñada para fase vegetativa. Espectro de crecimiento optimizado. Bajo consumo y alta durabilidad. Ideal para armarios pequeños.',
+    precio:'34.00', precioAnterior:'40.00', vendedor:'Farming Monkey', user_id:0, categoria:'iluminacion', stock:12, rating:4.6, reviews:28,
+    specs:[['Potencia','35W'],['Fase','Vegetativa'],['Espectro','Crecimiento'],['Consumo','Bajo'],['Ahorro','15%']] },
+
+  { id:30, nombre:'Reflector Liso Abierto', imagen:'https://www.alchimiaweb.com/img_art/n/reflector-abierto-liso_3101n.jpg',
+    descripcion:'Reflector de aluminio pulido liso de apertura amplia. Distribución uniforme de la luz. Compatible con bombillas E40 HPS y CMH. Ideal para cámaras grandes.',
+    precio:'6.14', precioAnterior:'9.45', vendedor:'Tecnocultivo', user_id:0, categoria:'iluminacion', stock:30, rating:4.5, reviews:52,
+    specs:[['Material','Aluminio pulido'],['Apertura','Amplia'],['Compatible','E40 HPS / CMH'],['Uso','Cámaras grandes'],['Ahorro','35%']] },
+
+  { id:31, nombre:'Reflector Pearl Pro XL', imagen:'https://www.alchimiaweb.com/img_art/n/reflector-pearl-pro-xl_5231n.jpg',
+    descripcion:'Reflector de alta eficiencia con superficie granulada tipo piel de naranja. Alta reflexión difusa para distribución homogénea de la luz. Compatible con sistemas E40.',
+    precio:'18.64', precioAnterior:'24.85', vendedor:'Tecnocultivo', user_id:0, categoria:'iluminacion', stock:18, rating:4.7, reviews:41,
+    specs:[['Superficie','Granulada Pearl'],['Reflexión','Difusa alta'],['Compatible','E40'],['Distribución','Homogénea'],['Ahorro','25%']] },
+
+  { id:32, nombre:'Reflector Cerrado Maxlight', imagen:'https://www.alchimiaweb.com/img_art/n/reflector-cerrado-maxreflect_7129n.jpg',
+    descripcion:'Reflector cerrado Maxreflect con cristal de separación. Permite el uso con extractores de aire para disminuir temperatura. Doble cristal templado.',
+    precio:'59.95', precioAnterior:null, vendedor:'Maxlight', user_id:0, categoria:'iluminacion', stock:7, rating:4.8, reviews:39,
+    specs:[['Tipo','Cerrado con cristal'],['Ventilación','Compatible extractor'],['Cristal','Templado doble'],['Temperatura','Reducida'],['Compatible','HPS/MH']] },
+
+  { id:33, nombre:'Reflector Gavita Hortistar 600SE', imagen:'https://www.alchimiaweb.com/img_art/n/reflector-gavita-hortistar-600se_6481n.jpg',
+    descripcion:'Reflector Gavita HortiStar con 96% de reflexión. Distribución uniforme y máxima eficiencia lumínica. Referencia del sector profesional.',
+    precio:'66.75', precioAnterior:'89.00', vendedor:'Gavita', user_id:0, categoria:'iluminacion', stock:5, rating:4.9, reviews:67,
+    specs:[['Reflexión','96%'],['Distribución','Uniforme'],['Marca','Gavita'],['Uso','Profesional'],['Ahorro','25%']] },
+
+  { id:34, nombre:'Bombilla Sylvania Grolux 400W', imagen:'https://www.alchimiaweb.com/img_art/n/bombilla-sylvania-grolux-400w_3299n.jpg',
+    descripcion:'Bombilla HPS Sylvania Grolux de 400W. Espectro de alta producción optimizado para floración. Larga duración y máxima eficiencia lumínica.',
+    precio:'12.66', precioAnterior:'21.10', vendedor:'Sylvania', user_id:0, categoria:'iluminacion', stock:25, rating:4.8, reviews:134,
+    specs:[['Potencia','400W'],['Tipo','HPS Grolux'],['Espectro','Floración'],['Marca','Sylvania'],['Ahorro','40%']] },
+
+  // ════════════════════════════════════════
+  //  💨 VENTILACIÓN
+  // ════════════════════════════════════════
+  { id:35, nombre:'Extractor Box FOAM 6000m³/h', imagen:'https://www.alchimiaweb.com/img_art/n/extractor-box-foam-6000m3h_19876n.jpg',
+    descripcion:'Extractor silencioso de alta potencia con caudal de 6000m³/h. Recubrimiento de espuma termoplástica para alto grado de insonorización.',
+    precio:'529.35', precioAnterior:null, vendedor:'Tecnocultivo', user_id:0, categoria:'ventilacion', stock:3, rating:4.8, reviews:12,
+    specs:[['Caudal','6000m³/h'],['Tipo','Box insonorizado'],['Recubrimiento','Espuma termoplástica'],['Ruido','Muy bajo'],['Uso','Gran instalación']] },
+
+  { id:36, nombre:'Extractor Box FOAM 5000m³/h', imagen:'https://www.alchimiaweb.com/img_art/n/extractor-box-foam-5000m3h_19875n.jpg',
+    descripcion:'Extractor silencioso con caudal de 5000m³/h y recubrimiento de espuma termoplástica. Alto grado de insonorización para uso discreto.',
+    precio:'470.53', precioAnterior:null, vendedor:'Tecnocultivo', user_id:0, categoria:'ventilacion', stock:4, rating:4.8, reviews:9,
+    specs:[['Caudal','5000m³/h'],['Tipo','Box insonorizado'],['Recubrimiento','Espuma termoplástica'],['Ruido','Mínimo'],['Uso','Instalación media-grande']] },
+
+  { id:37, nombre:'Termohigrómetro BIG con sonda', imagen:'https://www.alchimiaweb.com/img_art/n/termohigrometro-vanguard-big_12987n.jpg',
+    descripcion:'Medidor digital de temperatura y humedad con sonda externa. Registro de máximas y mínimas. Imprescindible para el control ambiental del cultivo de interior.',
+    precio:'7.48', precioAnterior:'8.80', vendedor:'Vanguard', user_id:0, categoria:'ventilacion', stock:40, rating:4.7, reviews:98,
+    specs:[['Mide','Temperatura + humedad'],['Sonda','Externa incluida'],['Registro','Máx. y mín.'],['Display','Digital grande'],['Ahorro','15%']] },
+
+  // ════════════════════════════════════════
+  //  💧 RIEGO
+  // ════════════════════════════════════════
+  { id:38, nombre:'Piqueta sin gotero 11cm', imagen:'https://www.alchimiaweb.com/img_art/n/piqueta-sin-gotero-11cm_14531n.jpg',
+    descripcion:'Piqueta de 11cm para mantener goteros elevados del sustrato. Asegura un sistema de riego firme y estable. Compatible con tubería estándar.',
+    precio:'0.20', precioAnterior:null, vendedor:'Tecnocultivo', user_id:0, categoria:'riego', stock:200, rating:4.4, reviews:33,
+    specs:[['Longitud','11cm'],['Uso','Soporte gotero'],['Material','Plástico ABS'],['Compatibilidad','Tubería estándar'],['Precio','Unitario']] },
+
+  { id:39, nombre:'Sprayer Neptune 360°', imagen:'https://www.alchimiaweb.com/img_art/n/sprayer-neptune-360_16453n.jpg',
+    descripcion:'Microdifusores de agua en cono de 360°. Ideales para Aerocloner Neptune o sistemas de microaspersión. Distribución uniforme y caudal regulable.',
+    precio:'0.55', precioAnterior:null, vendedor:'Neptune', user_id:0, categoria:'riego', stock:150, rating:4.5, reviews:28,
+    specs:[['Ángulo','360°'],['Tipo','Microaspersor cónico'],['Compatible','Aerocloner Neptune'],['Distribución','Uniforme'],['Precio','Unitario']] },
+
+  { id:40, nombre:'Kit de cultivo 150x150x220 LED Ignator 720W', imagen:'https://www.alchimiaweb.com/img_art/n/kit-cultivo-led-720w-150x150x220_18721n.jpg',
+    descripcion:'Kit completo de cultivo con armario 150x150x220cm y LED Ignator 720W. Incluye ventilación, filtro de carbón y sistema de riego. Listo para usar.',
+    precio:'529.90', precioAnterior:null, vendedor:'Tecnocultivo', user_id:0, categoria:'kits', stock:4, rating:4.9, reviews:41,
+    specs:[['Armario','150×150×220cm'],['Luz','LED Ignator 720W'],['Incluye','Ventilación + filtro + riego'],['Nivel','Profesional'],['Uso','Listo para usar']] },
+
+  // ════════════════════════════════════════
+  //  🏠 ARMARIOS
+  // ════════════════════════════════════════
+  { id:41, nombre:'Armario GrowT 120x120cm', imagen:'https://www.alchimiaweb.com/img_art/n/armario-growt-120x120cm_17843n.jpg',
+    descripcion:'Armario de cultivo de alta calidad con Mylar diamante en el interior y tela Oxford en el exterior. 120×120×200cm. Precio imbatible.',
+    precio:'68.79', precioAnterior:'88.20', vendedor:'GrowT', user_id:0, categoria:'armarios', stock:8, rating:4.8, reviews:73,
+    specs:[['Dimensiones','120×120×200cm'],['Interior','Mylar diamante'],['Exterior','Oxford negro'],['Cremalleras','Reforzadas'],['Ahorro','22%']] },
+
+  // ════════════════════════════════════════
+  //  🛡️ PLAGAS Y OLORES
+  // ════════════════════════════════════════
+  { id:42, nombre:'Bolsa ocultación pienso Perro 800g', imagen:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=400&q=80',
+    descripcion:'Bolsa antiolor PetEat de 800g imitación comida para perros. Aluminio resistente, cierre zip hermético y termosellado opcional. Discreción total.',
+    precio:'1.00', precioAnterior:null, vendedor:'PetEat', user_id:0, categoria:'plagas', stock:100, rating:4.3, reviews:47,
+    specs:[['Capacidad','800g'],['Material','Aluminio laminado'],['Cierre','Zip hermético'],['Termosellado','Opcional'],['Uso','Antiolor']] },
+
+  // ════════════════════════════════════════
+  //  🔧 HERRAMIENTAS
+  // ════════════════════════════════════════
+  { id:43, nombre:'Báscula Poppins 1g–10Kg', imagen:'https://www.alchimiaweb.com/img_art/n/bascula-poppins-lab-10kg_19543n.jpg',
+    descripcion:'Báscula digital Poppins Lab de 1g a 10kg. Ideal para pesar fertilizantes, sustratos o productos a granel con precisión. Pantalla LCD clara.',
+    precio:'6.95', precioAnterior:null, vendedor:'Poppins Lab', user_id:0, categoria:'herramientas', stock:35, rating:4.5, reviews:62,
+    specs:[['Rango','1g – 10kg'],['Precisión','1g'],['Pantalla','LCD'],['Uso','Fertilizantes / granel'],['Pila','Incluida']] },
+
+  { id:44, nombre:'Sensor Flower Care Bluetooth', imagen:'https://www.alchimiaweb.com/img_art/n/sensor-flower-care-bluetooth_3059n.jpg',
+    descripcion:'Sensor inteligente bluetooth para plantas. Monitoriza riego, luz, temperatura y nutrientes. Control desde smartphone con app propia. Últimas unidades.',
+    precio:'20.24', precioAnterior:'22.00', vendedor:'REA', user_id:0, categoria:'herramientas', stock:3, rating:4.4, reviews:18,
+    specs:[['Mide','Riego, luz, temp., nutrientes'],['Conexión','Bluetooth'],['App','Propia (iOS + Android)'],['Batería','Larga duración'],['Ahorro','8%']] },
+
+  { id:45, nombre:'Cuchilla Peladora Rapax', imagen:'https://www.alchimiaweb.com/img_art/n/cuchilla-peladora-rapax_14782n.jpg',
+    descripcion:'Cuchilla de recambio original para peladora Rapax. Corte limpio y preciso. Acero de alta calidad resistente a fertilizantes y resina.',
+    precio:'8.25', precioAnterior:null, vendedor:'Rapax', user_id:0, categoria:'herramientas', stock:25, rating:4.6, reviews:22,
+    specs:[['Compatible','Peladora Rapax'],['Material','Acero alta calidad'],['Tipo','Recambio original'],['Corte','Limpio y preciso'],['Resistente','Resina + fertilizantes']] },
+
+  { id:46, nombre:'Pack Fumeta', imagen:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&q=80',
+    descripcion:'Pack básico de artículos para el fumador. Incluye papel, filtros y mechero. Precio ajustado para un uso cotidiano completo.',
+    precio:'7.80', precioAnterior:null, vendedor:'GreenRoom', user_id:0, categoria:'parafernalia', stock:50, rating:4.3, reviews:34,
+    specs:[['Contenido','Papel + filtros + mechero'],['Uso','Cotidiano'],['Formato','Pack completo'],['Precio','Ajustado'],['Categoría','Parafernalia']] },
+
+  // ════════════════════════════════════════
+  //  🏷️ OUTLET
+  // ════════════════════════════════════════
+  { id:47, nombre:'SuperWings Suplemento Reflector', imagen:'https://www.alchimiaweb.com/img_art/n/alas-reflectoras-suplemento_11981n.jpg',
+    descripcion:'Alas reflectoras adicionales para ampliar el área de cobertura de tu reflector existente. Más luz, mayor área de cultivo. Outlet -25%.',
+    precio:'8.21', precioAnterior:'10.95', vendedor:'Tecnocultivo', user_id:0, categoria:'outlet', stock:15, rating:4.4, reviews:29,
+    specs:[['Función','Ampliar reflexión'],['Compatible','Reflectores E40'],['Efecto','Mayor cobertura'],['Material','Aluminio'],['Ahorro','25%']] },
+
+];
+
+// ══════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════
+function togglePass(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.style.opacity = show ? '1' : '0.4';
+  btn.title = show ? 'Ocultar contraseña' : 'Mostrar contraseña';
+}
+
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  document.querySelector('.t-icon').textContent = type==='success' ? '✓' : '⚠';
+  document.getElementById('toast-msg').textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className='', 3200);
+}
+
+function escapeHtml(s) {
+  return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function stars(rating) {
+  const full = Math.floor(rating);
+  const half = rating - full >= 0.5 ? 1 : 0;
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5-full-half);
+}
+
+// ══════════════════════════════════════
+//  ROUTER
+// ══════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('main-footer').style.display = id==='page-shop' ? '' : 'none';
+}
+function showAuth() { showPage('page-auth'); }
+function showShop() {
+  showPage('page-shop');
+  document.getElementById('username-display').textContent = currentUser.username;
+  loadCatalog(); loadMisProductos(); loadMisCompras(); renderCart();
+}
+
+function openCheckout() {
+  if (!cart.length) return;
+  loadSavedCard(); // carga tarjeta cifrada si existe
+  goStep(1);
+  openModal('modal-checkout');
+}
+
+// ══════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════
+function switchAuthTab(tab, e) {
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  if(e) e.target.classList.add('active');
+  document.getElementById('auth-login').style.display    = tab==='login' ? '' : 'none';
+  document.getElementById('auth-register').style.display = tab==='register' ? '' : 'none';
+  clearErrors();
+}
+function clearErrors() { document.querySelectorAll('.form-error').forEach(el=>{el.className='form-error';el.textContent='';}); }
+function showError(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+async function doLogin() {
+  const email=document.getElementById('login-email').value.trim();
+  const pass =document.getElementById('login-pass').value;
+  if (!email||!pass)        return showError('login-error','Rellena todos los campos.');
+  if (!isValidEmail(email)) return showError('login-error','Email inválido.');
+
+  // Verificar credenciales con hash
+  const passHash = await hashPassword(pass);
+  if (email===ADMIN_EMAIL && passHash===ADMIN_HASH) {
+    currentUser={id:1, username:ADMIN_USERNAME, isAdmin:true};
+    updateNavAuth(true); showShop(); await loadDemoProfile(1); toast('¡Bienvenido! 🛡️'); return;
+  }
+  const demoUser = DEMO_USERS.find(u => u.email===email && u.hash===passHash);
+  if (demoUser) {
+    currentUser={id:demoUser.id, username:demoUser.username, isAdmin:demoUser.isAdmin};
+    updateNavAuth(true); showShop(); await loadDemoProfile(demoUser.id); toast('¡Bienvenido! 🌿'); return;
+  }
+  try {
+    const res=await fetch(`${API}/auth/login.php`,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const data=await res.json();
+    if (!res.ok) return showError('login-error',data.error||'Credenciales incorrectas.');
+    currentUser={id:data.user_id,username:data.username,isAdmin:data.isAdmin||false};
+    updateNavAuth(true); showShop(); toast(`¡Bienvenido, ${currentUser.username}! 🌿`);
+  } catch { showError('login-error','No se pudo conectar con el servidor.'); }
+}
+
+async function doRegister() {
+  const username=document.getElementById('reg-username').value.trim();
+  const email   =document.getElementById('reg-email').value.trim();
+  const pass    =document.getElementById('reg-pass').value;
+  const confirm =document.getElementById('reg-confirm').value;
+  if (!username||!email||!pass||!confirm) return showError('reg-error','Rellena todos los campos.');
+  if (!isValidEmail(email))               return showError('reg-error','Email inválido.');
+
+  // Validar contraseña fuerte
+  const r = checkPasswordStrength(pass);
+  if (!r.len)     return showError('reg-error','La contraseña debe tener al menos 12 caracteres.');
+  if (!r.upper)   return showError('reg-error','La contraseña debe contener al menos una mayúscula.');
+  if (!r.lower)   return showError('reg-error','La contraseña debe contener al menos una minúscula.');
+  if (!r.special) return showError('reg-error','La contraseña debe contener al menos un carácter especial (!@#$%...).');
+  if (pass!==confirm) return showError('reg-error','Las contraseñas no coinciden.');
+
+  try {
+    const res=await fetch(`${API}/auth/register.php`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password:pass,confirm_password:confirm})});
+    const data=await res.json();
+    if (!res.ok) return showError('reg-error',data.error||'Error al registrarse.');
+    toast('¡Cuenta creada! Inicia sesión 🌱');
+    document.querySelectorAll('.auth-tab')[0].click();
+  } catch { showError('reg-error','Error de conexión.'); }
+}
+
+function logout() { currentUser=null; cart=[]; updateNavAuth(false); showAuth(); toast('Sesión cerrada.'); }
+
+function updateNavAuth(on) {
+  document.getElementById('btn-login').style.display    =on?'none':'';
+  document.getElementById('btn-logout').style.display   =on?'':'none';
+  document.getElementById('btn-cart-wrap').style.display=on?'':'none';
+  document.getElementById('nav-user').textContent       =on?`@${currentUser.username}${currentUser.isAdmin?' 🛡️':''}` :'';
+  // Solo el admin ve el botón de publicar producto
+  const btnPublicar = document.getElementById('btn-publicar');
+  if (btnPublicar) btnPublicar.style.display = (on && currentUser.isAdmin) ? '' : 'none';
+}
+
+// ══════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════
+function showTab(tab) {
+  const map={catalogo:0,carrito:1,'mis-productos':2,'mis-compras':3};
+  document.querySelectorAll('.shop-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.shop-tab')[map[tab]]?.classList.add('active');
+  document.getElementById(`tab-${tab}`)?.classList.add('active');
+}
+
+// ══════════════════════════════════════
+//  CATÁLOGO
+// ══════════════════════════════════════
+let allProducts = [];
+
+async function loadCatalog() {
+  const grid=document.getElementById('products-grid');
+  try {
+    const res=await fetch(`${API}/api/productos.php`,{credentials:'include'});
+    const data=await res.json(); allProducts=data.productos||[];
+  } catch { allProducts=DEMO_PRODUCTS; }
+  renderProducts();
+}
+
+function filterCat(cat, btn) {
+  currentFilter=cat;
+  document.getElementById('search-input').value='';
+  document.getElementById('search-clear').style.display='none';
+  document.getElementById('search-results-count').textContent='';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.filter-btn').forEach(b=>{ if(b.textContent.toLowerCase().includes(cat==='todos'?'todos':cat)) b.classList.add('active'); });
+  }
+  renderProducts();
+}
+
+let searchQuery = '';
+function searchProducts(q) {
+  searchQuery = q.trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  const countEl  = document.getElementById('search-results-count');
+  clearBtn.style.display = searchQuery ? '' : 'none';
+  // Quitar filtro de categoría al buscar
+  if (searchQuery) {
+    currentFilter = 'todos';
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.filter-btn').classList.add('active');
+  }
+  renderProducts();
+  if (searchQuery) {
+    const n = document.querySelectorAll('#products-grid .product-card').length;
+    countEl.textContent = n ? `${n} resultado${n!==1?'s':''} para "${q.trim()}"` : `Sin resultados para "${q.trim()}"`;
+  } else {
+    countEl.textContent = '';
+  }
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value='';
+  document.getElementById('search-clear').style.display='none';
+  document.getElementById('search-results-count').textContent='';
+  searchQuery='';
+  renderProducts();
+}
+
+
+// Fallback de imágenes por categoría (Wikimedia Commons — siempre públicas)
+const IMG_FALLBACK = {
+  semillas:    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Cannabis_seeds.jpg/320px-Cannabis_seeds.jpg',
+  sustratos:   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Coir_products.jpg/320px-Coir_products.jpg',
+  nutricion:   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fertilizer_bag.jpg/320px-Fertilizer_bag.jpg',
+  iluminacion: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LED_grow_light.jpg/320px-LED_grow_light.jpg',
+  ventilacion: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Inline_fan.jpg/320px-Inline_fan.jpg',
+  riego:       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Drip_irrigation.jpg/320px-Drip_irrigation.jpg',
+  armarios:    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Grow_tent.jpg/320px-Grow_tent.jpg',
+  plagas:      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Neem_oil.jpg/320px-Neem_oil.jpg',
+  herramientas:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Garden_tools.jpg/320px-Garden_tools.jpg',
+  extraccion:  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fertilizer_bag.jpg/320px-Fertilizer_bag.jpg',
+  parafernalia:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Rolling_papers.jpg/320px-Rolling_papers.jpg',
+  kits:        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Grow_tent.jpg/320px-Grow_tent.jpg',
+  outlet:      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LED_grow_light.jpg/320px-LED_grow_light.jpg',
+  otros:       'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fertilizer_bag.jpg/320px-Fertilizer_bag.jpg',
+};
+
+function getProductImg(p) {
+  return p.imagen || CAT_IMAGES[p.categoria] || CAT_IMAGES.otros;
+}
+
+function imgWithFallback(p) {
+  const src = getProductImg(p);
+  const cat = p.categoria || 'otros';
+  const emoji = CAT_EMOJI[cat] || '📦';
+  const fb1 = CAT_IMAGES[cat] || CAT_IMAGES.otros;  // Unsplash
+  return `<img src="${src}" alt="${escapeHtml(p.nombre)}" loading="lazy"
+    onerror="this.onerror=null;this.src='${fb1}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'}"
+    style="width:100%;height:100%;object-fit:cover">
+  <div class="product-img-placeholder" style="display:none">${emoji}</div>`;
+}
+
+function renderProducts() {
+  const grid=document.getElementById('products-grid');
+  let list = currentFilter==='todos' ? allProducts : allProducts.filter(p=>(p.categoria||'otros')===currentFilter);
+  // Filtro de búsqueda
+  if (searchQuery) {
+    list = allProducts.filter(p => {
+      const txt = [p.nombre, p.descripcion, p.categoria, p.vendedor, ...(p.specs||[]).map(s=>s.join(' '))].join(' ').toLowerCase();
+      return txt.includes(searchQuery);
+    });
+  }
+
+  if (!list.length) {
+    grid.innerHTML=`<div class="empty"><div class="e-icon">🌿</div><p>No hay productos en esta categoría.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p=>{
+    const cat  =p.categoria||'otros';
+    const img  =p.imagen||CAT_IMAGES[cat]||CAT_IMAGES.otros;
+    const esMio=p.user_id===currentUser?.id;
+    const stockTxt=p.stock>10?'En stock':`Últimas ${p.stock} uds`;
+    const stockCls=p.stock>10?'stock-ok':'stock-low';
+    const ratingVal=p.rating||4.5;
+    return `<div class="product-card" onclick="openProductDetail(${p.id})">
+      <div class="product-img">
+        ${imgWithFallback(p)}
+        <div class="product-badge">${escapeHtml(cat)}</div>
+        <div class="product-stock ${stockCls}">${escapeHtml(stockTxt)}</div>
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${escapeHtml(cat)}</div>
+        <div class="product-name">${escapeHtml(p.nombre)}</div>
+        <div style="font-size:.75rem;color:var(--clay);letter-spacing:1px;margin-bottom:.4rem">${stars(ratingVal)} <span style="color:var(--muted);font-family:var(--FC)">(${p.reviews||0})</span></div>
+        <div class="product-desc-short">${escapeHtml(p.descripcion||'Sin descripción')}</div>
+        <div class="product-footer">
+          <div>
+            <div class="product-price">${parseFloat(p.precio).toFixed(2)} €${p.precioAnterior?`<span style="font-size:.72rem;color:var(--subtle);text-decoration:line-through;font-family:var(--FC);font-weight:400;margin-left:.4rem">${parseFloat(p.precioAnterior).toFixed(2)} €</span>`:''}
+            </div>
+            <div class="product-seller">@${escapeHtml(p.vendedor||p.username||'—')}</div>
+          </div>
+          ${esMio
+            ?`<span style="font-size:.68rem;color:var(--subtle);font-family:var(--FC);text-transform:uppercase">Tu producto</span>`
+            :`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();addToCartQuick(${p.id})">+ Añadir</button>`
+          }
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+//  PRODUCT DETAIL MODAL
+// ══════════════════════════════════════
+function openProductDetail(id) {
+  const p = allProducts.find(x=>x.id===id);
+  if (!p) return;
+  currentDetailProduct = p;
+
+  const cat = p.categoria||'otros';
+  const img = p.imagen||CAT_IMAGES[cat]||CAT_IMAGES.otros;
+  const esMio = p.user_id===currentUser?.id;
+
+  // imagen
+  const imgWrap = document.getElementById('detail-img-wrap');
+  imgWrap.innerHTML = `<img src="${img}" alt="${escapeHtml(p.nombre)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'font-size:5rem;display:flex;align-items:center;justify-content:center;height:100%\\'>${CAT_EMOJI[cat]||'📦'}</div>')">`;
+
+  document.getElementById('detail-cat').textContent   = cat;
+  document.getElementById('detail-name').textContent  = p.nombre;
+  document.getElementById('detail-price').textContent = `${parseFloat(p.precio).toFixed(2)} €`;
+  document.getElementById('detail-desc').textContent  = p.descripcion||'Sin descripción';
+  document.getElementById('detail-seller').textContent= `Vendido por @${p.vendedor||p.username||'—'}`;
+  document.getElementById('detail-stars').textContent = stars(p.rating||4.5);
+  document.getElementById('detail-rating-count').textContent = `(${p.reviews||0} valoraciones)`;
+  document.getElementById('detail-qty').value = 1;
+
+  // specs
+  const specsEl = document.getElementById('detail-specs');
+  if (p.specs && p.specs.length) {
+    specsEl.innerHTML = p.specs.map(([k,v])=>`<div class="spec-row"><span class="spec-label">${escapeHtml(k)}</span><span class="spec-val">${escapeHtml(v)}</span></div>`).join('');
+    specsEl.style.display='';
+  } else { specsEl.style.display='none'; }
+
+  const btn = document.getElementById('detail-add-btn');
+  if (esMio) { btn.textContent='Tu producto'; btn.disabled=true; btn.className='btn btn-ghost btn-block btn-lg'; }
+  else       { btn.textContent='+ Añadir al carrito'; btn.disabled=false; btn.className='btn btn-primary btn-block btn-lg'; }
+
+  openModal('modal-product');
+}
+
+function changeDetailQty(delta) {
+  const input=document.getElementById('detail-qty');
+  input.value=Math.max(1,Math.min(99,(parseInt(input.value)||1)+delta));
+}
+
+function addToCartFromDetail() {
+  if (!currentDetailProduct) return;
+  const qty=parseInt(document.getElementById('detail-qty').value)||1;
+  const p=currentDetailProduct;
+  addToCart({producto_id:p.id, nombre:p.nombre, precio:p.precio, vendedor:p.vendedor||'—', imagen:p.imagen||CAT_IMAGES[p.categoria||'otros'], qty});
+  closeModal('modal-product');
+}
+
+function addToCartQuick(id) {
+  const p=allProducts.find(x=>x.id===id);
+  if (!p) return;
+  addToCart({producto_id:p.id,nombre:p.nombre,precio:p.precio,vendedor:p.vendedor||'—',imagen:p.imagen||CAT_IMAGES[p.categoria||'otros'],qty:1});
+}
+
+// ══════════════════════════════════════
+//  CARRITO
+// ══════════════════════════════════════
+function addToCart(item) {
+  if (!currentUser) return toast('Inicia sesión primero.','error');
+  const ex=cart.find(i=>i.producto_id===item.producto_id);
+  if (ex) { ex.qty=(ex.qty||1)+(item.qty||1); renderCart(); toast(`Cantidad actualizada ✓`); return; }
+  cart.push({...item, qty:item.qty||1}); renderCart(); toast(`"${item.nombre}" añadido ✓`);
+}
+function removeFromCart(id){ cart=cart.filter(i=>i.producto_id!==id); renderCart(); }
+function changeCartQty(id,delta){
+  const item=cart.find(i=>i.producto_id===id);
+  if (!item) return;
+  item.qty=Math.max(1,(item.qty||1)+delta);
+  if (item.qty<1) { removeFromCart(id); return; }
+  renderCart();
+}
+
+function renderCart() {
+  const list =document.getElementById('cart-list');
+  const wrap =document.getElementById('cart-summary-wrap');
+  const count=document.getElementById('cart-count');
+  const totalItems=cart.reduce((a,i)=>a+(i.qty||1),0);
+  count.textContent=totalItems;
+  count.classList.toggle('show',totalItems>0);
+
+  if (!cart.length) {
+    list.innerHTML=`<div class="empty"><div class="e-icon">🧺</div><p>Tu cesta está vacía.</p></div>`;
+    wrap.style.display='none'; return;
+  }
+  list.innerHTML=cart.map(i=>{
+    const subtotal=(parseFloat(i.precio)*(i.qty||1)).toFixed(2);
+    return `<div class="cart-item">
+      <div class="cart-item-img">
+        <img src="${escapeHtml(i.imagen||'')}" alt="" onerror="this.style.display='none'">
+        <span>${CAT_EMOJI['otros']}</span>
+      </div>
+      <div class="cart-item-info">
+        <h4>${escapeHtml(i.nombre)}</h4>
+        <p>@${escapeHtml(i.vendedor)} · ${parseFloat(i.precio).toFixed(2)} € / ud</p>
+      </div>
+      <div class="cart-item-qty">
+        <button class="cart-qty-btn" onclick="changeCartQty(${i.producto_id},-1)">−</button>
+        <span style="font-size:.9rem;min-width:20px;text-align:center">${i.qty||1}</span>
+        <button class="cart-qty-btn" onclick="changeCartQty(${i.producto_id},1)">+</button>
+      </div>
+      <div class="cart-item-price">${subtotal} €</div>
+      <button class="btn btn-danger btn-sm" onclick="removeFromCart(${i.producto_id})" style="flex-shrink:0">✕</button>
+    </div>`;
+  }).join('');
+
+  const subtotal=cart.reduce((a,i)=>a+(parseFloat(i.precio)*(i.qty||1)),0);
+  const iva=subtotal*0.21;
+  const total=subtotal+iva;
+  document.getElementById('cart-subtotal').textContent=`${subtotal.toFixed(2)} €`;
+  document.getElementById('cart-iva').textContent=`${iva.toFixed(2)} €`;
+  document.getElementById('cart-total-val').textContent=`${total.toFixed(2)} €`;
+  document.getElementById('pay-total-btn').textContent=`${total.toFixed(2)} €`;
+  wrap.style.display='';
+}
+
+async function procesarPago() {
+  const card   =document.getElementById('pay-card').value.replace(/\s/g,'');
+  const titular=document.getElementById('pay-titular').value.trim();
+  const exp    =document.getElementById('pay-exp').value.trim();
+  const cvv    =document.getElementById('pay-cvv').value.trim();
+
+  if (!card||!titular||!exp||!cvv) return showError('err-step2','Rellena todos los datos de pago.');
+  if (card.length!==16)            return showError('err-step2','El número de tarjeta debe tener 16 dígitos.');
+  if (!luhnCheck(card))            return showError('err-step2','Número de tarjeta inválido.');
+  if (!/^\d{2}\/\d{2}$/.test(exp)) return showError('err-step2','Formato de caducidad inválido (MM/AA).');
+  if (cvv.length<3)                return showError('err-step2','CVV inválido.');
+
+  const btn=document.getElementById('btn-pagar');
+  btn.textContent='Procesando…'; btn.disabled=true;
+
+  // Guardar tarjeta cifrada si el usuario marcó la casilla (sin CVV)
+  const saveCheck = document.getElementById('save-card-check');
+  if (saveCheck && saveCheck.checked) {
+    await saveCardEncrypted(card, titular, exp);
+    toast('Tarjeta guardada con cifrado AES-256 🔒');
+  }
+
+  await new Promise(r=>setTimeout(r,1800));
+
+  try {
+    const res=await fetch(`${API}/api/pedidos.php`,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart.map(i=>({producto_id:i.producto_id,cantidad:i.qty||1}))})});
+    await res.json();
+  } catch {}
+
+  const orderNum='GR-'+Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('confirm-order-num').textContent=`#${orderNum}`;
+  cart=[]; renderCart(); loadMisCompras();
+  goStep(3);
+  btn.innerHTML='Pagar →'; btn.disabled=false;
+}
+
+// ══════════════════════════════════════
+//  CHECKOUT HELPERS
+// ══════════════════════════════════════
+function goStep(n) {
+  if (n===2) {
+    const nombre=document.getElementById('sh-nombre').value.trim();
+    const dir   =document.getElementById('sh-dir').value.trim();
+    const cp    =document.getElementById('sh-cp').value.trim();
+    const ciudad=document.getElementById('sh-ciudad').value.trim();
+    if (!nombre||!dir||!cp||!ciudad) { showError('err-step1','Rellena todos los campos obligatorios.'); return; }
+    if (!/^\d{5}$/.test(cp)) { showError('err-step1','Código postal inválido (5 dígitos).'); return; }
+    clearErrors();
+  }
+  [1,2,3].forEach(i=>{
+    document.getElementById(`step-${i}`).classList.toggle('active',i===n);
+    const tab=document.getElementById(`step-tab-${i}`);
+    tab.classList.remove('active','done');
+    if (i===n) tab.classList.add('active');
+    else if (i<n) tab.classList.add('done');
+  });
+}
+
+function formatCard(el) {
+  let v=el.value.replace(/\D/g,'').substring(0,16);
+  el.value=v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExp(el) {
+  let v=el.value.replace(/\D/g,'');
+  if (v.length>=2) v=v.substring(0,2)+'/'+v.substring(2,4);
+  el.value=v;
+}
+
+function luhnCheck(num) {
+  const digits=num.replace(/\s/g,'').split('').reverse().map(Number);
+  const sum=digits.reduce((acc,d,i)=>{ if(i%2===1){d*=2;if(d>9)d-=9;} return acc+d; },0);
+  return sum%10===0;
+}
+
+// ══════════════════════════════════════
+//  MIS PRODUCTOS (solo admin puede editar/borrar)
+// ══════════════════════════════════════
+async function loadMisProductos() {
+  const list=document.getElementById('mis-productos-list');
+  let productos=[];
+  try { const res=await fetch(`${API}/api/productos.php?mine=1`,{credentials:'include'}); const data=await res.json(); productos=data.productos||[]; } catch {}
+  if (!productos.length) { list.innerHTML=`<div class="empty"><div class="e-icon">🌱</div><p>Aún no has publicado nada.<br><strong>¡Empieza a vender!</strong></p></div>`; return; }
+  const isAdmin = currentUser?.isAdmin;
+  list.innerHTML=productos.map(p=>`
+    <div class="my-prod-row">
+      <div><div class="my-prod-name">${escapeHtml(p.nombre)}</div><div class="my-prod-price">${parseFloat(p.precio).toFixed(2)} €</div></div>
+      <div class="my-prod-actions">
+        ${isAdmin ? `
+          <button class="btn btn-ghost btn-sm" onclick='openEdit(${JSON.stringify(p)})'>✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${p.id})">🗑️ Eliminar</button>
+        ` : `<span style="font-size:.7rem;color:var(--subtle);font-family:var(--FC)">Solo lectura</span>`}
+      </div>
+    </div>`).join('');
+}
+
+async function crearProducto() {
+  if (!currentUser?.isAdmin) return toast('Solo el administrador puede publicar productos.','error');
+  const nombre   =document.getElementById('prod-nombre').value.trim();
+  const desc     =document.getElementById('prod-desc').value.trim();
+  const precio   =parseFloat(document.getElementById('prod-precio').value);
+  const categoria=document.getElementById('prod-categoria').value;
+  if (!nombre)                  return showError('prod-error','El nombre es obligatorio.');
+  if (isNaN(precio)||precio<=0) return showError('prod-error','Precio inválido.');
+  try {
+    const res=await fetch(`${API}/api/productos.php`,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre,descripcion:desc,precio,categoria})});
+    const data=await res.json();
+    if (!res.ok) return showError('prod-error',data.error||'Error.');
+    closeModal('modal-nuevo-producto');
+    ['prod-nombre','prod-desc','prod-precio'].forEach(id=>document.getElementById(id).value='');
+    loadCatalog(); loadMisProductos(); toast('Producto publicado ✓');
+  } catch { showError('prod-error','Error de conexión.'); }
+}
+
+function openEdit(p) {
+  if (!currentUser?.isAdmin) return toast('Solo el administrador puede editar productos.','error');
+  document.getElementById('edit-prod-id').value    =p.id;
+  document.getElementById('edit-prod-nombre').value=p.nombre;
+  document.getElementById('edit-prod-desc').value  =p.descripcion||'';
+  document.getElementById('edit-prod-precio').value=p.precio;
+  openModal('modal-editar-producto');
+}
+
+async function guardarEdicion() {
+  if (!currentUser?.isAdmin) return toast('Acceso denegado.','error');
+  const id    =document.getElementById('edit-prod-id').value;
+  const nombre=document.getElementById('edit-prod-nombre').value.trim();
+  const desc  =document.getElementById('edit-prod-desc').value.trim();
+  const precio=parseFloat(document.getElementById('edit-prod-precio').value);
+  if (!nombre)                  return showError('edit-prod-error','Nombre obligatorio.');
+  if (isNaN(precio)||precio<=0) return showError('edit-prod-error','Precio inválido.');
+  try {
+    const res=await fetch(`${API}/api/productos.php`,{method:'PUT',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,nombre,descripcion:desc,precio})});
+    const data=await res.json();
+    if (!res.ok) return showError('edit-prod-error',data.error||'Error.');
+    closeModal('modal-editar-producto'); loadCatalog(); loadMisProductos(); toast('Actualizado ✓');
+  } catch { showError('edit-prod-error','Error de conexión.'); }
+}
+
+async function eliminarProducto(id) {
+  if (!currentUser?.isAdmin) return toast('Solo el administrador puede eliminar productos.','error');
+  if (!confirm('⚠️ ¿Eliminar este producto definitivamente?')) return;
+  try {
+    const res=await fetch(`${API}/api/productos.php`,{method:'DELETE',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+    const data=await res.json();
+    if (!res.ok) return toast(data.error||'Error.','error');
+    loadCatalog(); loadMisProductos(); toast('Producto eliminado.');
+  } catch { toast('Error de conexión.','error'); }
+}
+
+// ══════════════════════════════════════
+//  MIS COMPRAS
+// ══════════════════════════════════════
+async function loadMisCompras() {
+  const cont = document.getElementById('compras-list');
+  if (!cont) return;
+  const compras = currentUser?._compras || [];
+  if (!compras.length) {
+    cont.innerHTML = '<div class="empty"><div class="e-icon">📦</div><p>Aún no tienes pedidos.</p></div>';
+    return;
+  }
+  const estadoColor = {Entregado:'var(--sage)', 'En camino':'var(--sand)', Procesando:'var(--clay)'};
+  cont.innerHTML = compras.map(c => `
+    <div class="order-item">
+      <div>
+        <div style="font-size:.82rem;font-family:var(--FC);letter-spacing:.5px;color:var(--cream);margin-bottom:.2rem">${escapeHtml(c.ref)}</div>
+        <div style="font-size:.75rem;color:var(--muted)">${escapeHtml(c.fecha)} · ${escapeHtml(c.productos)}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:.9rem;color:var(--wheat);font-family:var(--FC);font-weight:700">${escapeHtml(c.total)} €</div>
+        <div style="font-size:.68rem;font-family:var(--FC);font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:${estadoColor[c.estado]||'var(--muted)'};margin-top:.2rem">${escapeHtml(c.estado)}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════�
+// ══════════════════════════════════════
+//  MODALES
+// ══════════════════════════════════════
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('open'); document.body.style.overflow=''; }
+}
+// Cerrar modal al hacer clic en el overlay
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// ══════════════════════════════════════
+//  CONTACTO
+// ══════════════════════════════════════
+function enviarContacto() {
+  const nombre = document.getElementById('c-nombre').value.trim();
+  const email  = document.getElementById('c-email').value.trim();
+  const msg    = document.getElementById('c-msg').value.trim();
+  if (!nombre || !email || !msg) { toast('Rellena todos los campos.','error'); return; }
+  closeModal('modal-contacto');
+  toast('Mensaje enviado ✓ Te responderemos en 24h.');
+}
+
+
+// ══════════════════════════════════════
+//  DATOS DE DEMO (cifrados al cargar)
+// ══════════════════════════════════════
+const DEMO_PROFILES = {
+  2: 'CjFAguzu28C4HkhZCePWH/0Ks7hMFtCoX8FI0IL6m39p4RfLOhQqvMhLHBBQkXrx1Xee3dI0T+7UR/cvxIhAdxZmwWDkjVnYf1Y6G/XfzOiRZqsairTJ9ZxgDrZ7TJrgtVbWglALlNg7nrY4xecMrLgI/YLUGmEq9vxPq3MUDUbP8dHUcs4xCcG3sgdpnbJr38h7IO9BVsAIe0oTDIqsQRXBFQ+gK1BoU1JIm5QOZAcE+xw6sKbPNckl9kHizNJZV7IbQWkmnIv4L42bTfKVBu/awgiGQL0nWhYaiquQwjgUatDoY01vpDyKqG5WiD7EWXaJwOJ+eWMKfyKe7XGfOi9lKZUw/vRcaYlXaZ1WShvU0dcE7fKQjkq6PTkjjzpvVVksRc/uY+V1CacdW5XcUNPNzUOVHjnh+T+aiaVR7aUzFmCl5kA0eUmbdttcPfIBg3v0cIeKYvwz8m7KB2meAxH1YwaSSyphR8H8hqojD6sIpkOuPwYAQ5vBT2gJyNjD/ac3DSOqFxaMPnR0Nd8uO8sifRCNFcQ/uIkiK2VSLieEU4hOKgwDdJ4CQrbzrb68GkL+E9Yq6fYiqo/ODJDD3HPeybkUvkCH5vQQqRxIC5yVg+qgslivg8otkWAA9ihgYR5GrGBqm8qXyskyyQ/k8b6VLUvO1f4CRJ7dhg5zCwPUJUzmMF94MeOebC/xlMyofEobfhxULkeBLOYlWPo85KKUYYwxYo2XO9/GXHLMlN+Fi/uCqNvNEkd7t/fhIu8d7ZSxOSnDSazEGI9udKfIByyIVdCUe/YFkia7x15wbUvC9YRM3qKTX/vdEfYqqeOfLCemjUMxDzVo+DZRgd6+Kag1XscUkT/1KK2jAydTo5IEC0i/hRL6moVCpBzJxyG1WkB/M4SMhkBi2LHDgEVIG/MZH1j/6R19Jmm1pei8E5FjoetYQ9gHNamOUB+YTJCT6d5Cl7Q=',
+  3: '9tbuxSrliL/4MCb5KAgcTcWIANu4WSUeb+Jj2qUMgm1Wm14iPwh592rEAWkLvc1izZDa2kKyfm+IeSO1O9hKGSv6N8YD5JAoabDTKHa0OKAegkb7OxciEcAG3zhghgnyzVPMEokCJrzmGCaxynGgTlAx825AKJ8E4xdMuKWexpLxhjkpMkvChQkIMT66QcC37Y8/vTXmGvRy9VGdB3EG/VoVxNNJPgvZGnBOjgSAermOsgdtEfHeBOIDX30Ys9DspTZPFSkCqnYaIW8FNJE5VD1ZPdP5LVbwXH0XbJAVJ7lIdm9cPgTUGe8MvrC3XjKxa3IqopKj3F9urHNHQs4Jv+5tlyD5c+Sm6NpAHmesoHGdLHJy5Hx5/1iVTWrH1J+tzxjdXDHllv8VuErayAPfVexi8ELIAgvShl4IA2DXS03fIYIX4nNVgMU69o0Y9VBUjh/Pb0zeo2BKoRXBlTaYTQTCWxD3eSuOpjmHsLNYAbgGU/iVVtZ99BMcyAM42NCJlTex0/sHDMoknoGhcAFTcjaIFOwpsyhsb1UXlvngo/mxhgjerFG1DJUAOCoWONfq81y8UnYsAec4c6fqWFCQjSdc+aHFpLMQ5fzqKhJHYccZN0gDGagTXyFmuNxYX8h4AhwHt3eRiXzEuSMUNPWcB6cnzvLeuYlmFOWPqpSI70ixMhJeU2nMtzqYKOO7p6WlBofFet8ovYsf9+2HCsfmTYhiPicAFtaN3wXKQ4Q0twRbSpUBRPSbHdP9+0E847bVKDKbEoEOCGSP9y4R9qPqvGFQVPIwCEJT8FEFcZ9ZtCT0QuGCtMeDvVa4B6SrxQtLlYa6o65bCzaVu25pind+Dld4EmAohw05UaHPUANbe5UBr6+4gVScGlCnRR5TmMps7sLHtn5R9VqbCYtBv6XcvER0bdbDlKtnaMxRktbSIaLekeFGP8cy1rIOjr8lVsMEAqDbNVjHdvobAcb8UII=',
+  4: 'VbaKnD/L5+8P+URuhNwMuMIAVLdDyBIy8masmghc2ukn9E1mrVkp2eWRMy1L6qu4/XKUv4KlDMYUE9jnb89612dbHPzxqd0qZZRby/k7kPpgeFApGDUrooXJ8yPGXjQB5LS0slsUPPortp8MZ9rSLbd5uN57Cdnpy7Wud5yg5GjsbyMdcD65sJETemxGGXqhDuvUShJChnfQpM2TOfxvBuQoaJXa4YUbTs3uBJ0F3FE+bMpRf6I2l9l9b9/BPalzPUIrN017pI2ZVBps1nNMq8MOi/a/qiasDJniIknAOrHvrXtv4aF86839+sMzKFX8Lg0B1+xwNCuIPNE1UJMTJ+TDDbYH7p3dx3fd7Owiz3CbQoiEc9VBoRm3S409g+GGm6In7G6lCSDe3jCJJObuCIvbi7chjU+3EGmbCHk9BPL/z+8W0tYNQbOunn+SSSmSLj/R89rYpn59X12+IjpkPZWE81waermTpVPd0bmC5veDCNpXqxAqn4EUWeuZvyxJWmaqTX33rxx681LwmWmdzgeIG5AYydZUBHI2wfVnJBxY206s1Sw3kN8R6CO1l6Mie5jaSzGLq1fY59sHZbGuxNO3R0A4wArprALbwnrtUVU4xfIPwpoVLs3Y90F7AKO5JH8N6ZKPZitEHHoU1P4XcJtUJf/HzioZ0v3n8YIzhi40QtKYv/HV02Mpv9ZkNrqKYfWlZSJiER1AX27+yTGwL5HX/BYmNLsEa5tnI/AsccvUcPvl7Uiai6t0rYjB8fSpssD69CuVNPbamEet',
+  5: 'miotai5IWbf0POTF0rvX/BN5Kbd9j5xXxF7ZZvERC1DKVXHjYGUOx5sHnWd0+bZfKxKFVAEu51QyEbHzrywflEA4HXH2Eb//V+o5zs8vZLI3206ClDTmSGSh5ADpbTHmwtKM0sqpKrb+vIQ5nw9yHKlsd94M0TWYEwUPOzFjgpWC4vgqhOPfAmXGIkRMsX8udweZ75GhoB5Cz0dS+PAPegiPzm9rDvtQDF0cyos0sTOJ0dBnhDgcQtkV0KphbDd7Lboq8l//8T0AZMQcoCgYnsUv+NiB7y/U/O01xCNHuHwV/QOXWL+bCuqgV0TMczX254KS0sflDiL1+wIMpFeDr/F6K17O0zB+i2FIbJQqBa8bxku9/XwdYYaVhH0elXtmDfY5G8nCtFNnJiVI17E55C0WakrzgAGvvEy/D1JVV0YUezMLiDcY6RR2Pg20Urlwrrv5UFPZTcn2Avq7ytecf5q1EVIaQAMEkk8W71oxyxN2lLTYsRv3rtyxcVqnczLcscAVsaufNnC192gh3piYWi9elQfiahE6xyeEzc/88DIV552VFmJIKISyxpuHn5kO8AyySKyQ3kP7ZYnHd6MpNK9kKj1zH6Q6YdYlszAzJln7YTusxwI1/B6gEUa+Qsc60BPbLH3hANHvzOnx3t4GIbWAfd9KEU3+EOBJhUXpqjMoAohuMbXt+FN9PuvPLQOylrYn90i/khGrkhpxI0Br4ArCMOZ5E6t8XEt5hyRe2u/shmqZlZOIlZG4yyxyCxhsmQU5XI70iZwTnoGDWMHPKRBmv6EnX/3gRUqRhjd0E6tQ/tsxj5v+zUWxn5eA8PzPYbgxuUX9JkDrz/YrX9IuBPvfXhgdLJpXmfC7qoCVXV8gtTWykZlTltUew/qAZop0G84FQdAqwWH98pf40LdnQGA5iLJot3aWsHJRxPK7hHSCUI1hKuVFiJXh/G26mr88QlJo/6u6pcgFcuiFBKlAFmYeBQ5dCDcGZpKuq7HFmvIqgdxybeQR6I1+/PyU9i+RGKQynwQ=',
+  6: 'HXwj71RneWDGagrQ4+68jgSAwcCG6UWWGa1y1OhgAzE+Hss150K26RELr/C64tMsHLmXMGXRk1NVZ88Iva0CsSv+cz0sWXG0jh8epVpLBbz1JxxVKA6MMfM8VRGFTZeiIlqmsEIKjR1b4osHdm4X2gSrUMCyxbXaJfm6omNTz1MYRal1aXdndQNVsoF8LpvsAnbZCnziXQehhmF0jGjClbnclVop5AxDXv4Cd/xomh1Y4218Jb7dmxV2/8gX/sW1k+314EBuRWZxTmdISOaW7CrX5QEWRW/YTd5nrvPeolaYNB1caxiN5Rp0W4lHKpJQWbaSC4u/8rWgma7DfVWY3S2rBUvuDVtf7VB3aP/1rhMnQFkKf1N8r6mT3LnLraU/pktO+nFDyPOL2TxpIg/sF8p+lzTHM1qgOlZEONobrCu2FNt8WPJG7RMyg4RWBx2mEmXxJFe84J6YQqu2471TSqcpmC/utB/l3ua73XkcQigwapkwY0vkgpQRs9vpwTeYfjRETG7576J8+NYYFMSw4RevI+U7H9IwjrPDD5iOZm0edg+4VX1lDx2zZi6YPAbcpm/cMpHQLxcE8Iahd5JATRg844b8eDxvh4ouSohq6H+UMN3OSQ+kGDEPVyZ3d/1fTwyH0z9lGOyzaz8YJ3Uwb+Ue2zBKQN1xFcyWCtu1TWVLvYn/fgIoxxdsaX94gqDs/B3Ht/XwU2EPL+v8wgx3dag9/3a/xzuMKCiRS/zEOE2aLRE4LLcH+yWTpvqWqcQj0UmTBsJn/DO87y1Vz1WzJv8XQaEaXjV7d7U=',
+  7: 'QnVyCGS/JBd7K0kOLspFka9uLz7DAnX80fZ8M/1F3Sj+MU4o9/y2Zn0Wr03BpiCYw8wuLFTK9MiGxaiqkmzjKRurKR2VBvl7rsqxQNHmXkpGCHll/P46xVzoFuKeEpxVxPC9VnjaKhIF0V/RWGtIUTXxvgFTFcQphgQ0zhpPnn6cYh+O7jMZq+OfEfWVw2UGCKQNgXA7AoDBoZD6DFoqeFIKHO/ngfPDnUNHOeGZ0exCyWHVB4bEsP7E5uBnK6WF3OVOh7eyscqZ3FBUiLZc7hBVRtwjKl22tFIuga7IHgeQlpIl/VTuo8eCm01Hr1hZdBleACjnGsIyckEHoL1Wc5Xxo0I89g5znR6f41xgcKtJzzVkUKdJyP62eX5T+Nx5cjG5eHKnGZCQSNQ7cz6/PtXnXau+pW08u9sS7qwSou22u6q2eMvjD3C1Zy5fKMHee8LVWrWdLz36eSKEf2WTwzC4XAVspAdGzFXi2rbnC4UwSetT6V6TR1UVBgus2qggssftC1AHT5xZcEo2iGvhsRIxam4dfIqWE8H0Yn5b0tS2oQMx5eZqs7YRgxsX0n3dzr+yhtscDW6VYE0N7INIbcFGica7Qf871e3q2LwX1xbHjzwVAgDP4O1yZCERefrTriIRix87sVwcOYrUn3tKgc8JyzWS8aspSAAgEytyTlDdv+J7hHYCKjDJd8AQB7/zKl1nVaOnhTR3RYTzSAVydqcf9ZBGU0lo/XpTnNzdFNIqWbNzPyXs+r5PMaoPnsRABE4fL3RP2dIb9RdM+B6ANj/tG35a21i7r12IFRJCwHYBeyURocTsuiYzr1j6nHL9ByLmVcwJLiEV3GynC1YC4zx+PeKd5dYgU2nEx3PrEaM3hi1GrmjnlM+AgQ==',
+  8: 'Gh9vqiZF7wfONsmCXds88eqz5Z+GsjBXhvixiIHJKTEcizXQMI6Qygc8458t9pVDNEjLC+MXzOir3CMNpID+nX008bO1NIIK0t6JO/X1RrB8ChZHTom8lGWNdvQAOoKdqa1vDJaK2Uh5hcyt+HmDcw07sV1AIgCrGFuFjMEtf9j+fuUowHSF9rooCur3u/FQ+qt064RzKaoUlTcVPutcs3nxaEysICEUK7PrLzy/dKdLBuqO4PhWS1CLXhiT5IZfDc4sUv/2QjK7j71ss7rMrTZgrYCbq19SJf3jPJbGYScYFvGfEPC+nta48Cp0u6uDnnFCz0NV1/ZwFYeel2PZBo2T3vunb6MbhTXYosGRfB8+Qr7ikmCPqTlJ3GBwqw9f8ZzuU5tO5APbDTAMAWMViwVW3J2ktQro/t8/SUuVniUW8bUuzpMn7d9GeMrQ4V1UjR2Kc9u/URmQcNtrw7j52ZOipbXyswXzy61IhalbuddX04Lr8X3njuLoJBUqiNKxZn9Ic8NQHeMVbQf3g5tYhwGBqafUji5co8rvufEyq9KK/fjmC+EyZ+D7Th01qnyKRgXuSDtbcpfBj/Myl170nCBuVJ0x3+bZoWcOO7uOSq9RtW3VgwyEqqQHNGoEy7Asbfp/nT+AOBCKjmAUevcKLcy4H/W86qEOFFfXZgF7xgduKaIecwscHkm0zN9L83fZbqg/RnYVwgQ+S595Ul2CmmsgriVwSY6IV0tcJ8u69eQmFzcBgPzQCxaIRvjdqOHghEcuriiDCP5ArFlMXPjpv1cMtK6lla7HIcFdlTnuuppx9A6no2sAe6KbPy4xeHc1To97LlsODX+YoHmQDRNkQOfFwCSMz+pokzeCUjGOgW6iYks=',
+  9: '29PGbrQC1g0S68zs+Jb0l1PMydlHolLVV0FhuwhaoP6VGEepN2m5Ui7xSJmZam63TJDxhhwlOB/sDx6PZUxn1i3S7phcsap8GiCqbmodSnyvco1iWcyuFgq4S5dKZjKEndD6bD7u//yObdPLpPf+xXTmBvnlc6YMpepQ/y92vPV802WZlByxDjyZQmfqW+44d9iyJXvZTjrO9q6FNNnybzfjPyCVwIAdYSbGbBVm/yEp0KzN8YcNjbZk1AmdM5DR4S+piEEN+lVQU6MXllCPvlXa7NfRpc8hEVlkG1/JJuDewPtGE/Q/EXb10jWM2rL2UABena0yCMjVYD410LtjdsEiwW4GNQDOKNVY5NKs3HPgGpY1wpSLwn/xlkQWW5jFeFFzU6kHDeuRh6ObMHoPxpyTnJ6KGDPmYOQ/JUupQSqp/J1vV5+r/iNMauXTAt8I/3RSUmvcuSUn9dhzqk3aAGe6746z3Sl6IgdF0a+2nSxyqOlOrpYOlI5NG5JwJ+bZgfKdHP4HSrBJrc2FlaNpnj8vq/VeE3Pa3MUvSmbQZQ9WT80/oOJB4HZgakz40XykcQ9rwcYMIjSOMJrTcCpcKt0xl5GANzUgYfsrovJfwGYr+mfxy59h+0zxZ5lYRVuOWp66zrRMAk3wBStfe+sX2lvGcJOXeU1aUdl6Adux8tFumeAPR60MdVckSBwmBouwL5/iw1xVfHMLU/X0wRkZNFATOiyetRGNZSLXZwaLqliTsSWr78HWI8JSGHcJvGf1lv/g4stGj868FyEOGeOhPPUl7zfdyk6+1L/1BI2cYjjaygDxrRjK0fdp4lO9VL2uxt3T2MbJgFMFshNNABEFF/Mo91f8jfmGZ9AvBdanppAPBnliG7pI/VSllcZizXpgJvXTE+sKY2qwAMb9iVyveegGAG+Ejhkwd/xfpDDYedEx4+r2WS5KwzSSLxRMXYNNKDfPS5WaQiNpFw==',
+  10: 'mcB7gWoEMiLPjh4kBrzS4ONvCP/cPgFbk4AJXBI9nOgZ65A0KzioctH06jGSn+x54h3VdexTcgwqsYt/pcUAG2Zckn4qH7gAwivw56f1s/rGMiTyA/SDKqIiNIjKfhiyZkEO5rXBqHY0xqOov0bG+dKDcxAH1nKcDAqY6vB3NHi2D1wtxE8atIgFx3LAO8YjkfEb6Fr69gea81fMDCTX2hHAANQc+gaqYWmFkor0h5Jh9IhH7RLq37FLz/yv6YHPc+JGZd0yeylcCVvYf07sQWZgxX04ArKfB2JAZdKPZA4Cq+ee5wxSD+q9w89YYTxiHUQwMF82MJ2xkkyq6LgBncLE80Yg/FSAT4CzGXaA2pOL1GBp4oTGUhAA4TdP8jKAWFu+75WSaJAOJEnHbwQRAAF4x5ZEuxAftoIONHrdpqtch5N1GEA9ri7zwPzPm0sGGC0lEEU9e+JsdlZShLrnvGUX2bRnWpBfIIxcJWK1e35tWrtKBkxH5972LqX0b0vUEiyZVuS2Pp6cjoiiPzrx4rrqvc/6ulNK//IrSa7w27C9Lb0Laz5CDC9w/I9+GI6SJy8X7o+h+lYjUrJCDz+W/qjVfHaIm3tCQtGlm4+9ZaFRVicINp04m6xZwnyfvjse3UqkXZ4c9dYboJJ2u13r1/FTY9GIV7uGuRUf/9pwODm0vkAV6R6X6R11xKFMbFHQw4hNfQwQB554GvVqOSJgU5G5Zb/7g58u7HuM2pw9KEsVrdv1z5AnQxGm+U0lcoHlaZg+dr9c13KnTOSSeFeEszpaQZzeprilMFZBxbnvoDW0',
+  11: 'putQY/Qw3Cs5QVr8u3JcGLKLKMA7R2ukCwswSg7OaEcA1Z4sArBZKNi+Xl2K78uc+O2Y6C5s5UUU3XxEJzJcCleXdEe81cxyKLzzylVBLRj8Q3om/d7Xv5BGP7tq4nls36a+a8308WKuEQuiMoWpmLEJ4rYMmj6ktq5P5tLdp4AR2w5TQQTgiTfRDnQrJoxPxrYsHlAxEh2WxSVlKJxpexZgVOnJ1zb/JrQg8DrGXsXGH05fIW2leFgut9yRx3RoyBfyZcgnMxF2JUUGn+tzKFJe2ORElsGftHu+srAZwr2F2yneIB36cYDBhXAoIVTHNfdCXR1uH7sT8x568u1IcDMPPQw8iygBAk6MZm+WXjTHRvso3e88qquK/ZNDgWp911qPAvx0uhG+3lEyC/LAaJFmLeSB8cC/KT0JnGBiyjeUVebCWJcWSw4c0cxCDZYzbvdbzYW96NOD5npxWTfkdSpCOuNpenCT8sz7dQP0c1+BY52K1VQukzhEsVzs+cRpLkz3qI5HX0OXNZvItMPqivP6TS2wOrdXHQVOmnOX3TcgbRQksOYXxE/iJXMYAA+qGbtuRHhbS4pwrlxT6YSWId8VmzhIlCtjs0804F0B4D6MM6ql/+jDyrOmqqHtuNKeE+r53YVfciArz0QQeNTKFlCEcXuwn7gVasEKAxRwqB5c7ZlrPOI05Gxa7D6kva/7o9aLj8bRMrnlMaPhJlRva3eMFqrCluryxslV4sU3+hR3IRc5woizlkDP6lupfzEsz/tdFveLFCcUXXbUnK0dP+f9uux1a7hv6Wv4h3Y8SaMZ+5GEAmsfZ5Yev9V90wUV657AC5sV08+knwGtSeBxZUj26uLuAEpHYEaomCfnoq8FqWQRp6UupC+kAWEPcWDFftewPaScvwO1gCD2FDne0T33e/YsxbpXq6/Nl9UD/ZCBDyB66+URVaDkyh/BdDjl4ghPjFOdVpKIw+BihUq3PcWJZgfypMdIiY8FnYJJNTNRfdoF/wsU/U+Dqx7zFeGgloTNmhSaaK4wm+HH0d0wCG9ClqrDKDE=',
+};
+
+async function loadDemoProfile(userId) {
+  const blob = DEMO_PROFILES[userId];
+  if (!blob) return;
+  try {
+    // Derivar clave igual que en el cifrado: PBKDF2-SHA256 100k iter
+    const MASTER = 'GR_MASTER_2026_xK9#mP2@vL5';
+    const saltStr = `GR_PROFILE_SALT_${userId}`;
+    const keyMat = await crypto.subtle.importKey('raw', new TextEncoder().encode(MASTER), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt:new TextEncoder().encode(saltStr), iterations:100000, hash:'SHA-256'},
+      keyMat, {name:'AES-GCM', length:256}, false, ['decrypt']
+    );
+    // Decodificar base64 → bytes: iv(12) + tag(16) + ciphertext
+    const raw   = Uint8Array.from(atob(blob), c => c.charCodeAt(0));
+    const iv    = raw.slice(0, 12);
+    const tag   = raw.slice(12, 28);
+    const ctext = raw.slice(28);
+    // AES-GCM descifrar (la tag va concatenada al final del ciphertext en WebCrypto)
+    const combined = new Uint8Array([...ctext, ...tag]);
+    const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv, tagLength:128}, key, combined);
+    const profile = JSON.parse(new TextDecoder().decode(plain));
+
+    // Rellenar carrito
+    if (profile.carrito && profile.carrito.length) {
+      cart = profile.carrito.map(item => ({
+        ...(allProducts.find(p => p.id === item.id) || {id:item.id, nombre:item.nombre, precio:item.precio}),
+        qty: item.qty
+      })).filter(x => x);
+      renderCart();
+      const total = cart.reduce((a,c)=>a+(c.qty||1),0);
+      document.getElementById('cart-count').textContent = total || '';
+      document.getElementById('btn-cart-wrap').style.display = '';
+    }
+
+    // Cifrar y guardar tarjeta en sessionStorage (igual que el sistema real)
+    if (profile.tarjeta_last4 && currentUser) {
+      const demoCard = JSON.stringify({
+        card: '000000000000' + profile.tarjeta_last4,
+        titular: profile.tarjeta_titular,
+        exp: profile.tarjeta_exp
+      });
+      const encrypted = await encryptData(demoCard, String(userId));
+      try { sessionStorage.setItem(`gr_card_${userId}`, encrypted); } catch(e) {}
+      renderSavedCardBanner(profile.tarjeta_last4, profile.tarjeta_titular);
+    }
+
+    // Rellenar tarjeta de perfil
+    const card = document.getElementById('demo-profile-card');
+    if (card && profile.perfil) {
+      card.style.display = '';
+      document.getElementById('dp-nombre').textContent    = profile.perfil.nombre || '—';
+      document.getElementById('dp-telefono').textContent  = profile.perfil.telefono || '—';
+      const d = profile.direccion || {};
+      document.getElementById('dp-direccion').textContent = [d.calle, d.cp, d.ciudad, d.provincia].filter(Boolean).join(', ');
+      document.getElementById('dp-tarjeta').textContent   = `•••• •••• •••• ${profile.tarjeta_last4}   exp: ${profile.tarjeta_exp}`;
+    }
+
+    // Guardar historial de compras para renderizarlo
+    if (profile.compras) currentUser._compras = profile.compras;
+    loadMisCompras();
+
+  } catch(err) {
+    console.warn('loadDemoProfile error:', err);
+  }
+}
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  showAuth();
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if(e.target===ov) closeModal(ov.id); });
+  });
+  ['login-email','login-pass'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  });
+});
+</script>
+</body>
+</html>
